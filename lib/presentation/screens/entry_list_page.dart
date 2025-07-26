@@ -7,6 +7,8 @@ import 'package:localization_ui_tool/core/utils/arb_validator.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
 
+import 'package:localization_ui_tool/core/models/session_key.dart';
+
 class EntryListPage extends StatefulWidget {
   const EntryListPage({super.key});
 
@@ -16,7 +18,7 @@ class EntryListPage extends StatefulWidget {
 
 class _EntryListPageState extends State<EntryListPage> {
   final TextEditingController _newKeyController = TextEditingController();
-  final List<String> _sessionAddedKeys = [];
+  final List<SessionKey> _sessionAddedKeys = [];
   String? _collidedKey;
 
   @override
@@ -76,7 +78,7 @@ class _EntryListPageState extends State<EntryListPage> {
                       ElevatedButton(
                         onPressed: () async {
                           final newKey = _newKeyController.text.trim();
-                          final validationError = ArbValidator.validateKey(newKey);
+                          final validationError = ArbValidator.validateKey(context, newKey);
                           if (validationError != null) {
                             ErrorDialog.show(context, validationError);
                             return;
@@ -95,10 +97,17 @@ class _EntryListPageState extends State<EntryListPage> {
                               });
                             } else {
                               // Key does not exist, navigate to add new entry
-                              final result = await context.push('/edit/$newKey');
-                              if (result == true) {
+                              final result = await context.push(
+                                '/edit/$newKey',
+                                extra: SessionKeyStatus.newKey,
+                              );
+                              if (result is SessionKey) {
                                 setState(() {
-                                  _sessionAddedKeys.add(newKey);
+                                  // Remove if already exists (e.g., if it was modified from new to modified)
+                                  _sessionAddedKeys.removeWhere(
+                                    (element) => element.key == result.key,
+                                  );
+                                  _sessionAddedKeys.add(result);
                                 });
                               }
                               setState(() {
@@ -119,7 +128,8 @@ class _EntryListPageState extends State<EntryListPage> {
                       '${String.fromCharCode(0x21AA)} ${context.l10n.keyExists}: $_collidedKey',
                       style: const TextStyle(color: Colors.red),
                     ),
-                    onTap: () => context.push('/edit/$_collidedKey'),
+                    onTap: () =>
+                        context.push('/edit/$_collidedKey', extra: SessionKeyStatus.modifiedKey),
                   ),
                 if (_sessionAddedKeys.isNotEmpty)
                   Expanded(
@@ -137,10 +147,19 @@ class _EntryListPageState extends State<EntryListPage> {
                           child: ListView.builder(
                             itemCount: _sessionAddedKeys.length,
                             itemBuilder: (context, index) {
-                              final key = _sessionAddedKeys[index];
+                              final sessionKey = _sessionAddedKeys[index];
                               return ListTile(
-                                title: Text(key),
-                                onTap: () => context.push('/edit/$key'),
+                                leading: Icon(
+                                  sessionKey.status == SessionKeyStatus.newKey
+                                      ? Icons.add_circle_outline
+                                      : Icons.edit,
+                                  size: 18,
+                                ),
+                                title: Text(sessionKey.key),
+                                onTap: () => context.push(
+                                  '/edit/${sessionKey.key}',
+                                  extra: sessionKey.status,
+                                ),
                               );
                             },
                           ),

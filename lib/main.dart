@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
         ),
       ],
       child: MaterialApp.router(
-        title: 'Localization UI',
+        title: AppLocalizations.of(context)?.appTitle,
         routerConfig: router,
         localizationsDelegates: const [
           AppLocalizations.delegate,

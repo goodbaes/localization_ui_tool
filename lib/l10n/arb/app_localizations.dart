@@ -7,6 +7,7 @@ import 'package:intl/intl.dart' as intl;
 
 import 'app_localizations_en.dart';
 import 'app_localizations_es.dart';
+import 'app_localizations_ru.dart';
 
 // ignore_for_file: type=lint
 
@@ -96,6 +97,7 @@ abstract class AppLocalizations {
   static const List<Locale> supportedLocales = <Locale>[
     Locale('en'),
     Locale('es'),
+    Locale('ru'),
   ];
 
   /// No description provided for @appTitle.
@@ -164,12 +166,6 @@ abstract class AppLocalizations {
   /// **'Key cannot be empty'**
   String get keyCannotBeEmpty;
 
-  /// No description provided for @qwe.
-  ///
-  /// In en, this message translates to:
-  /// **'qwe'**
-  String get qwe;
-
   /// No description provided for @newKey.
   ///
   /// In en, this message translates to:
@@ -194,23 +190,11 @@ abstract class AppLocalizations {
   /// **'Key already exists'**
   String get keyExists;
 
-  /// No description provided for @qweqw.
-  ///
-  /// In en, this message translates to:
-  /// **'asdasd'**
-  String get qweqw;
-
   /// No description provided for @title_onboarding.
   ///
   /// In en, this message translates to:
   /// **'hello'**
   String get title_onboarding;
-
-  /// No description provided for @app.
-  ///
-  /// In en, this message translates to:
-  /// **'app'**
-  String get app;
 
   /// No description provided for @start.
   ///
@@ -218,23 +202,77 @@ abstract class AppLocalizations {
   /// **'start'**
   String get start;
 
-  /// No description provided for @r.
+  /// No description provided for @settings.
   ///
   /// In en, this message translates to:
-  /// **'qweqweasdfa Sas ADSF Asdf asdf sadvc 123 1341\$#!\$!@# 123 123'**
-  String get r;
+  /// **'Settings'**
+  String get settings;
 
-  /// No description provided for @tt.
+  /// No description provided for @arbDirectory.
   ///
   /// In en, this message translates to:
-  /// **'tt'**
-  String get tt;
+  /// **'ARB Directory'**
+  String get arbDirectory;
 
-  /// No description provided for @title.
+  /// No description provided for @notSet.
   ///
   /// In en, this message translates to:
-  /// **'asd'**
-  String get title;
+  /// **'Not set'**
+  String get notSet;
+
+  /// No description provided for @error.
+  ///
+  /// In en, this message translates to:
+  /// **'Error'**
+  String get error;
+
+  /// No description provided for @ok.
+  ///
+  /// In en, this message translates to:
+  /// **'OK'**
+  String get ok;
+
+  /// No description provided for @qwe.
+  ///
+  /// In en, this message translates to:
+  /// **'qwer'**
+  String get qwe;
+
+  /// No description provided for @qweg.
+  ///
+  /// In en, this message translates to:
+  /// **'r'**
+  String get qweg;
+
+  /// No description provided for @rrrrrr.
+  ///
+  /// In en, this message translates to:
+  /// **'qwe'**
+  String get rrrrrr;
+
+  /// No description provided for @qwe2.
+  ///
+  /// In en, this message translates to:
+  /// **'rqwer'**
+  String get qwe2;
+
+  /// No description provided for @keyInvalidCharacters.
+  ///
+  /// In en, this message translates to:
+  /// **'Key can only contain alphanumeric characters and underscores.'**
+  String get keyInvalidCharacters;
+
+  /// No description provided for @translationCannotBeEmpty.
+  ///
+  /// In en, this message translates to:
+  /// **'Translation cannot be empty.'**
+  String get translationCannotBeEmpty;
+
+  /// No description provided for @keyCannotStartWithAt.
+  ///
+  /// In en, this message translates to:
+  /// **'Key cannot start with \"@\".'**
+  String get keyCannotStartWithAt;
 }
 
 class _AppLocalizationsDelegate
@@ -248,7 +286,7 @@ class _AppLocalizationsDelegate
 
   @override
   bool isSupported(Locale locale) =>
-      <String>['en', 'es'].contains(locale.languageCode);
+      <String>['en', 'es', 'ru'].contains(locale.languageCode);
 
   @override
   bool shouldReload(_AppLocalizationsDelegate old) => false;
@@ -261,6 +299,8 @@ AppLocalizations lookupAppLocalizations(Locale locale) {
       return AppLocalizationsEn();
     case 'es':
       return AppLocalizationsEs();
+    case 'ru':
+      return AppLocalizationsRu();
   }
 
   throw FlutterError(

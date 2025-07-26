@@ -44,9 +44,6 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keyCannotBeEmpty => 'Key cannot be empty';
 
   @override
-  String get qwe => 'qwe';
-
-  @override
   String get newKey => 'New Key';
 
   @override
@@ -59,24 +56,45 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keyExists => 'Key already exists';
 
   @override
-  String get qweqw => 'asdasd';
-
-  @override
   String get title_onboarding => 'hello';
-
-  @override
-  String get app => 'app';
 
   @override
   String get start => 'start';
 
   @override
-  String get r =>
-      'qweqweasdfa Sas ADSF Asdf asdf sadvc 123 1341\$#!\$!@# 123 123';
+  String get settings => 'Settings';
 
   @override
-  String get tt => 'tt';
+  String get arbDirectory => 'ARB Directory';
 
   @override
-  String get title => 'asd';
+  String get notSet => 'Not set';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get qwe => 'qwer';
+
+  @override
+  String get qweg => 'r';
+
+  @override
+  String get rrrrrr => 'qwe';
+
+  @override
+  String get qwe2 => 'rqwer';
+
+  @override
+  String get keyInvalidCharacters =>
+      'Key can only contain alphanumeric characters and underscores.';
+
+  @override
+  String get translationCannotBeEmpty => 'Translation cannot be empty.';
+
+  @override
+  String get keyCannotStartWithAt => 'Key cannot start with \"@\".';
 }

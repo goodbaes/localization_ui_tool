@@ -45,9 +45,6 @@ class AppLocalizationsEs extends AppLocalizations {
   String get keyCannotBeEmpty => 'La clave no puede estar vacía';
 
   @override
-  String get qwe => 'qwe';
-
-  @override
   String get newKey => 'Nueva clave';
 
   @override
@@ -60,23 +57,46 @@ class AppLocalizationsEs extends AppLocalizations {
   String get keyExists => 'La clave ya existe';
 
   @override
-  String get qweqw => 'asdasd';
-
-  @override
   String get title_onboarding => 'holla';
-
-  @override
-  String get app => 'app';
 
   @override
   String get start => 'start';
 
   @override
-  String get r => 'r';
+  String get settings => 'Ajustes';
 
   @override
-  String get tt => 'tt';
+  String get arbDirectory => 'Directorio ARB';
 
   @override
-  String get title => 'asd';
+  String get notSet => 'No establecido';
+
+  @override
+  String get error => 'Error';
+
+  @override
+  String get ok => 'OK';
+
+  @override
+  String get qwe => 'qwerr';
+
+  @override
+  String get qweg => 'r';
+
+  @override
+  String get rrrrrr => 'qwe';
+
+  @override
+  String get qwe2 =>
+      'qwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as dd';
+
+  @override
+  String get keyInvalidCharacters =>
+      'La clave solo puede contener caracteres alfanuméricos y guiones bajos.';
+
+  @override
+  String get translationCannotBeEmpty => 'La traducción no puede estar vacía.';
+
+  @override
+  String get keyCannotStartWithAt => 'La clave no puede empezar con \"@\".';
 }

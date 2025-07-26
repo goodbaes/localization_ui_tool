@@ -2,13 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
+import 'package:localization_ui_tool/core/models/session_key.dart';
 import 'package:localization_ui_tool/core/utils/arb_validator.dart';
+import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
 
 class EntryEditPage extends StatefulWidget {
-  const EntryEditPage({required this.entryKey, super.key});
+  const EntryEditPage({required this.entryKey, required this.initialStatus, super.key});
   final String entryKey;
+  final SessionKeyStatus initialStatus;
 
   @override
   State<EntryEditPage> createState() => _EntryEditPageState();
@@ -19,9 +22,12 @@ class _EntryEditPageState extends State<EntryEditPage> {
   late TextEditingController _keyController; // Controller for the key input
   LocalizationEntry? _currentEntry;
   SnackBar? _currentSnackBar; // To keep track of the displayed SnackBar
+  String? _savedKey;
 
   // Define supported locales for displaying all translation fields
-  final List<String> _supportedLocales = ['en', 'es']; // Add more locales as needed
+  final List<String> _supportedLocales = AppLocalizations.supportedLocales
+      .map((e) => e.languageCode)
+      .toList();
 
   @override
   void initState() {
@@ -69,7 +75,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
     final keyToSave = widget.entryKey.isEmpty ? _keyController.text : _currentEntry!.key;
 
     // Validate key
-    final keyValidationError = ArbValidator.validateKey(keyToSave);
+    final keyValidationError = ArbValidator.validateKey(context, keyToSave);
     if (keyValidationError != null) {
       ErrorDialog.show(context, keyValidationError);
       return;
@@ -78,7 +84,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
     final updatedValues = <String, String>{};
     for (final locale in _supportedLocales) {
       final value = _controllers[locale]?.text ?? '';
-      final valueValidationError = ArbValidator.validateValue(value);
+      final valueValidationError = ArbValidator.validateValue(context, value);
       if (valueValidationError != null) {
         ErrorDialog.show(context, '${locale.toUpperCase()}: $valueValidationError');
         return;
@@ -92,6 +98,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
     );
 
     await context.read<LocalizationCubit>().updateEntry(updatedEntry);
+    _savedKey = updatedEntry.key; // Store the key that was actually saved
 
     // The navigation logic is now handled in the BlocListener
   }
@@ -128,7 +135,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
 
             // Pop after successful save, but defer to next frame
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pop(widget.entryKey.isEmpty); // Return true if it was a new entry
+              Navigator.of(context).pop(SessionKey(key: _savedKey!, status: widget.initialStatus));
             });
           } else if (state is LocalizationError) {
             // Dismiss the saving snackbar

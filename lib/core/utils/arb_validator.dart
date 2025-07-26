@@ -1,21 +1,27 @@
+import 'package:flutter/material.dart';
+import 'package:localization_ui_tool/l10n/l10n.dart';
+
 class ArbValidator {
-  static String? validateKey(String? key) {
+  /// Возвращает текст ошибки или null, если всё ок.
+  static String? validateKey(BuildContext context, String? key) {
+    final l10n = context.l10n;
     if (key == null || key.isEmpty) {
-      return 'Key cannot be empty.';
+      return l10n.keyCannotBeEmpty;
     }
     if (key.startsWith('@')) {
-      return 'Key cannot start with "@".';
+      return l10n.keyCannotStartWithAt;
     }
     if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(key)) {
-      return 'Key can only contain alphanumeric characters and underscores.';
+      return l10n.keyInvalidCharacters;
     }
-    return null; // Valid
+    return null;
   }
 
-  static String? validateValue(String? value) {
+  static String? validateValue(BuildContext context, String? value) {
+    final l10n = context.l10n;
     if (value == null || value.isEmpty) {
-      return 'Translation cannot be empty.';
+      return l10n.translationCannotBeEmpty;
     }
-    return null; // Valid
+    return null;
   }
 }

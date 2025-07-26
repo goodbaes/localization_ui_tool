@@ -11,7 +11,7 @@
   "key": "Clave",
   "translation": "Traducción",
   "keyCannotBeEmpty": "La clave no puede estar vacía",
-  "qwe": "qwe",
+  "qwe": "qwerr",
   "newKey": "Nueva clave",
   "add": "Añadir",
   "sessionAddedKeys": "Claves añadidas en esta sesión",
@@ -20,7 +20,16 @@
   "title_onboarding": "holla",
   "app": "app",
   "start": "start",
-  "r": "r",
-  "tt": "tt",
-  "title": "asd"
+  "settings": "Ajustes",
+  "arbDirectory": "Directorio ARB",
+  "notSet": "No establecido",
+  "error": "Error",
+  "ok": "OK",
+  "qweg": "r",
+  "rrrrrr": "qwe",
+  "qwe2": "qwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as dd",
+  "keyInvalidCharacters": "La clave solo puede contener caracteres alfanuméricos y guiones bajos.",
+  "translationCannotBeEmpty": "La traducción no puede estar vacía.",
+  "keyCannotStartWithAt": "La clave no puede empezar con \"@\".",
+  "test": "qwe"
 }

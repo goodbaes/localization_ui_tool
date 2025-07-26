@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
+import 'package:localization_ui_tool/l10n/l10n.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -11,7 +12,7 @@ class SettingsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Settings'),
+        title: Text(context.l10n.settings),
       ),
       body: BlocConsumer<SettingsCubit, SettingsState>(
         listener: (context, state) {
@@ -28,8 +29,8 @@ class SettingsPage extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   ListTile(
-                    title: const Text('ARB Directory'),
-                    subtitle: Text(state.settings.directoryPath ?? 'Not set'),
+                    title: Text(context.l10n.arbDirectory),
+                    subtitle: Text(state.settings.directoryPath ?? context.l10n.notSet),
                     trailing: IconButton(
                       icon: const Icon(Icons.folder_open),
                       onPressed: () async {
@@ -48,7 +49,7 @@ class SettingsPage extends StatelessWidget {
               ),
             );
           }
-          return const Center(child: Text('Error loading settings.'));
+          return Center(child: Text(context.l10n.errorLoadingEntries));
         },
       ),
     );
