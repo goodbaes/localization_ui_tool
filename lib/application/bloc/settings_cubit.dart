@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localization_ui_tool/core/services/directory_service.dart';
+import 'package:localization_ui_tool/core/use_cases/check_arb_directory_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/save_settings_use_case.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
@@ -14,9 +16,20 @@ class SettingsLoaded extends SettingsState {
 }
 
 class SettingsCubit extends Cubit<SettingsState> {
-  SettingsCubit({required this.getSettings, required this.saveSettings}) : super(SettingsInitial());
+  SettingsCubit({
+    required this.getSettings,
+    required this.saveSettings,
+    required this.directoryService,
+    required this.checkArbDirectoryUseCase,
+  }) : super(SettingsInitial());
   final GetSettingsUseCase getSettings;
   final SaveSettingsUseCase saveSettings;
+  final DirectoryService directoryService;
+  final CheckArbDirectoryUseCase checkArbDirectoryUseCase;
+
+  Future<bool> checkArbDirectory(String path) async {
+    return checkArbDirectoryUseCase(path);
+  }
 
   Future<void> load() async {
     final settings = await getSettings();

@@ -93,6 +93,50 @@ class AppLocalizationsEn extends AppLocalizations {
   String get keyCannotContainDigits => 'Key cannot contain digits.';
 
   @override
+  String get noArbFilesFound =>
+      'No .arb files found in the selected directory.';
+
+  @override
+  String get macOSPermissionErrorTitle => 'macOS Permission Error';
+
+  @override
+  String get macOSPermissionErrorExplanation =>
+      'It seems like the application doesn\'t have the necessary permissions to access the selected directory on macOS. Please follow these steps to grant Full Disk Access:';
+
+  @override
+  String get macOSPermissionErrorStepOne => '1. Close the application.';
+
+  @override
+  String get macOSPermissionErrorStepTwo =>
+      '2. Go to System Settings (or System Preferences) on your Mac.';
+
+  @override
+  String get macOSPermissionErrorStepThree => '3. Select Privacy & Security.';
+
+  @override
+  String get macOSPermissionErrorStepFour =>
+      '4. Scroll down and find Full Disk Access.';
+
+  @override
+  String get macOSPermissionErrorStepFive =>
+      '5. Click the lock icon to unlock settings and enter your administrator password.';
+
+  @override
+  String get macOSPermissionErrorStepSix =>
+      '6. Click the \'+\' button to add a new application.';
+
+  @override
+  String get macOSPermissionErrorStepSeven =>
+      '7. Navigate to your application (usually in build/macos/Build/Products/Debug/ or Release/ inside your project folder) and select it.';
+
+  @override
+  String get macOSPermissionErrorStepEight =>
+      '8. Ensure the toggle next to your application is turned on (blue).';
+
+  @override
+  String get macOSPermissionErrorButton => 'Show Instructions';
+
+  @override
   String get qwe => 'qwee';
 
   @override

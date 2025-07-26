@@ -2,6 +2,7 @@ import 'package:localization_ui_tool/core/repositories/settings_repository.dart'
 
 import 'package:flutter/material.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:localization_ui_tool/core/services/directory_service.dart';
 
 class Settings {
   Settings({
@@ -31,11 +32,12 @@ class Settings {
 }
 
 class GetSettingsUseCase {
-  GetSettingsUseCase(this.repo);
+  GetSettingsUseCase(this.repo, this.directoryService);
   final SettingsRepository repo;
+  final DirectoryService directoryService;
   Future<Settings> call() async {
     return Settings(
-      directoryPath: await repo.directoryPath,
+      directoryPath: directoryService.currentDirectoryPath,
       locale: await repo.locale,
       themeMode: await repo.themeMode,
       flexScheme: await repo.flexScheme,

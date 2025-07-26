@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/core/models/session_key.dart';
+import 'package:localization_ui_tool/core/use_cases/get_supported_locales_use_case.dart';
 import 'package:localization_ui_tool/core/utils/arb_validator.dart';
 import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
@@ -23,26 +25,33 @@ class _EntryEditPageState extends State<EntryEditPage> {
   LocalizationEntry? _currentEntry;
   SnackBar? _currentSnackBar; // To keep track of the displayed SnackBar
   String? _savedKey;
-
-  // Define supported locales for displaying all translation fields
-  final List<String> _supportedLocales = AppLocalizations.supportedLocales
-      .map((e) => e.languageCode)
-      .toList();
+  List<Locale> _supportedLocales = []; // Dynamically loaded locales
+  bool _isLoadingLocales = true;
 
   @override
   void initState() {
     super.initState();
     _keyController = TextEditingController(text: widget.entryKey);
+    _loadSupportedLocalesAndEntry();
+  }
 
-    // If it's a new entry, initialize with empty values for all supported locales
-    if (widget.entryKey.isEmpty) {
-      _currentEntry = const LocalizationEntry(key: '', values: {});
-      for (final locale in _supportedLocales) {
-        _controllers[locale] = TextEditingController();
-      }
-    } else {
-      // For existing entries, load data from cubit
-      WidgetsBinding.instance.addPostFrameCallback((_) {
+  Future<void> _loadSupportedLocalesAndEntry() async {
+    try {
+      final getSupportedLocales = GetIt.instance<GetSupportedLocalesUseCase>();
+      final locales = await getSupportedLocales();
+      setState(() {
+        _supportedLocales = locales;
+        _isLoadingLocales = false;
+      });
+
+      // If it's a new entry, initialize with empty values for all supported locales
+      if (widget.entryKey.isEmpty) {
+        _currentEntry = const LocalizationEntry(key: '', values: {});
+        for (final locale in _supportedLocales) {
+          _controllers[locale.languageCode] = TextEditingController();
+        }
+      } else {
+        // For existing entries, load data from cubit
         final state = context.read<LocalizationCubit>().state;
         if (state is LocalizationLoaded) {
           _currentEntry = state.entries.firstWhere(
@@ -53,11 +62,15 @@ class _EntryEditPageState extends State<EntryEditPage> {
 
           // Populate controllers for existing values and create for missing ones
           for (final locale in _supportedLocales) {
-            _controllers[locale] = TextEditingController(text: _currentEntry!.values[locale] ?? '');
+            _controllers[locale.languageCode] = TextEditingController(text: _currentEntry!.values[locale.languageCode] ?? '');
           }
-          setState(() {}); // Rebuild to show initial values
         }
+      }
+    } catch (e) {
+      setState(() {
+        _isLoadingLocales = false;
       });
+      ErrorDialog.show(context, 'Failed to load locales: $e', error: e);
     }
   }
 
@@ -77,19 +90,19 @@ class _EntryEditPageState extends State<EntryEditPage> {
     // Validate key
     final keyValidationError = ArbValidator.validateKey(context, keyToSave);
     if (keyValidationError != null) {
-      ErrorDialog.show(context, keyValidationError);
+      ErrorDialog.show(context, keyValidationError, error: null);
       return;
     }
 
     final updatedValues = <String, String>{};
     for (final locale in _supportedLocales) {
-      final value = _controllers[locale]?.text ?? '';
+      final value = _controllers[locale.languageCode]?.text ?? '';
       final valueValidationError = ArbValidator.validateValue(context, value);
       if (valueValidationError != null) {
-        ErrorDialog.show(context, '${locale.toUpperCase()}: $valueValidationError');
+        ErrorDialog.show(context, '${locale.languageCode.toUpperCase()}: $valueValidationError', error: null);
         return;
       }
-      updatedValues[locale] = value;
+      updatedValues[locale.languageCode] = value;
     }
 
     final updatedEntry = LocalizationEntry(
@@ -148,38 +161,40 @@ class _EntryEditPageState extends State<EntryEditPage> {
               ScaffoldMessenger.of(context).hideCurrentSnackBar();
               _currentSnackBar = null;
 
-              ErrorDialog.show(context, state.message);
+              ErrorDialog.show(context, state.message, error: null);
             }
           },
-          child: ListView(
-            padding: const EdgeInsets.all(16),
-            children: [
-              if (widget.entryKey.isEmpty) // Show key input only for new entries
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: TextField(
-                    controller: _keyController,
-                    decoration: InputDecoration(
-                      labelText: context.l10n.key,
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
+          child: _isLoadingLocales
+              ? const Center(child: CircularProgressIndicator())
+              : ListView(
+                  padding: const EdgeInsets.all(16),
+                  children: [
+                    if (widget.entryKey.isEmpty) // Show key input only for new entries
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: TextField(
+                          controller: _keyController,
+                          decoration: InputDecoration(
+                            labelText: context.l10n.key,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                    const SizedBox(height: 16),
+                    ..._supportedLocales.map((locale) {
+                      return Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        child: TextField(
+                          controller: _controllers[locale.languageCode],
+                          decoration: InputDecoration(
+                            labelText: '${locale.languageCode.toUpperCase()} ${context.l10n.translation}',
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      );
+                    }),
+                  ],
                 ),
-              const SizedBox(height: 16),
-              ..._supportedLocales.map((locale) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8),
-                  child: TextField(
-                    controller: _controllers[locale],
-                    decoration: InputDecoration(
-                      labelText: '${locale.toUpperCase()} ${context.l10n.translation}',
-                      border: const OutlineInputBorder(),
-                    ),
-                  ),
-                );
-              }),
-            ],
-          ),
         ),
       ),
     );

@@ -9,5 +9,6 @@ class LocalizationEntry with _$LocalizationEntry {
   const factory LocalizationEntry({
     required String key,
     required Map<String, String> values, // locale -> translated text
+    String? description,
   }) = _$LocalizationEntryImpl;
 }

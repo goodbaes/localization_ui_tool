@@ -2,13 +2,47 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
+import 'package:localization_ui_tool/core/use_cases/get_supported_locales_use_case.dart';
 import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
+import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
+import 'package:path/path.dart' as p;
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
+
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
+  List<Locale> _supportedLocales = [];
+  bool _isLoadingLocales = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSupportedLocales();
+  }
+
+  Future<void> _loadSupportedLocales() async {
+    try {
+      final getSupportedLocales = GetIt.instance<GetSupportedLocalesUseCase>();
+      final locales = await getSupportedLocales();
+      setState(() {
+        _supportedLocales = locales;
+        _isLoadingLocales = false;
+      });
+    } catch (e) {
+      setState(() {
+        _isLoadingLocales = false;
+      });
+      ErrorDialog.show(context, 'Failed to load locales: $e', error: e);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -44,9 +78,15 @@ class SettingsPage extends StatelessWidget {
                         onPressed: () async {
                           final selectedDirectory = await FilePicker.platform.getDirectoryPath();
                           if (selectedDirectory != null) {
+                            final normalizedPath = p.normalize(p.absolute(selectedDirectory));
+                            final hasArb = await context.read<SettingsCubit>().checkArbDirectory(normalizedPath);
+                            if (!hasArb) {
+                              ErrorDialog.show(context, context.l10n.noArbFilesFound, error: null);
+                              return;
+                            }
                             context.read<SettingsCubit>().update(
                               Settings(
-                                directoryPath: selectedDirectory,
+                                directoryPath: normalizedPath,
                                 locale: state.settings.locale,
                                 themeMode: state.settings.themeMode,
                                 flexScheme: state.settings.flexScheme,
@@ -58,22 +98,24 @@ class SettingsPage extends StatelessWidget {
                     ),
                     ListTile(
                       title: Text(context.l10n.language),
-                      trailing: DropdownButton<Locale>(
-                        value: Localizations.localeOf(context),
-                        onChanged: (Locale? newLocale) {
-                          if (newLocale != null) {
-                            context.read<SettingsCubit>().updateLocale(newLocale);
-                          }
-                        },
-                        items: AppLocalizations.supportedLocales.map<DropdownMenuItem<Locale>>((
-                          Locale locale,
-                        ) {
-                          return DropdownMenuItem<Locale>(
-                            value: locale,
-                            child: Text(locale.languageCode),
-                          );
-                        }).toList(),
-                      ),
+                      trailing: _isLoadingLocales
+                          ? const CircularProgressIndicator()
+                          : DropdownButton<Locale>(
+                              value: state.settings.locale ?? _supportedLocales.firstOrNull,
+                              onChanged: (Locale? newLocale) {
+                                if (newLocale != null) {
+                                  context.read<SettingsCubit>().updateLocale(newLocale);
+                                }
+                              },
+                              items: _supportedLocales.map<DropdownMenuItem<Locale>>((
+                                Locale locale,
+                              ) {
+                                return DropdownMenuItem<Locale>(
+                                  value: locale,
+                                  child: Text(locale.languageCode),
+                                );
+                              }).toList(),
+                            ),
                     ),
                     ListTile(
                       title: const Text('Theme Mode'), // TODO: Localize this string

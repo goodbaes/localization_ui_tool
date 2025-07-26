@@ -93,6 +93,51 @@ class AppLocalizationsRu extends AppLocalizations {
   String get keyCannotContainDigits => 'Ключ не может содержать цифры.';
 
   @override
+  String get noArbFilesFound =>
+      'В выбранной директории не найдено файлов .arb.';
+
+  @override
+  String get macOSPermissionErrorTitle => 'Ошибка разрешений macOS';
+
+  @override
+  String get macOSPermissionErrorExplanation =>
+      'Похоже, у приложения нет необходимых разрешений для доступа к выбранной директории в macOS. Пожалуйста, выполните следующие шаги, чтобы предоставить полный доступ к диску:';
+
+  @override
+  String get macOSPermissionErrorStepOne => '1. Закройте приложение.';
+
+  @override
+  String get macOSPermissionErrorStepTwo =>
+      '2. Перейдите в Системные настройки (или Системные параметры) на вашем Mac.';
+
+  @override
+  String get macOSPermissionErrorStepThree =>
+      '3. Выберите Конфиденциальность и безопасность.';
+
+  @override
+  String get macOSPermissionErrorStepFour =>
+      '4. Прокрутите вниз и найдите Полный доступ к диску.';
+
+  @override
+  String get macOSPermissionErrorStepFive =>
+      '5. Нажмите на значок замка, чтобы разблокировать настройки, и введите свой пароль администратора.';
+
+  @override
+  String get macOSPermissionErrorStepSix =>
+      '6. Нажмите кнопку \'+\', чтобы добавить новое приложение.';
+
+  @override
+  String get macOSPermissionErrorStepSeven =>
+      '7. Найдите свое приложение (обычно в build/macos/Build/Products/Debug/ или Release/ внутри папки вашего проекта) и выберите его.';
+
+  @override
+  String get macOSPermissionErrorStepEight =>
+      '8. Убедитесь, что переключатель рядом с вашим приложением включен (синий).';
+
+  @override
+  String get macOSPermissionErrorButton => 'Показать инструкции';
+
+  @override
   String get qwe => 'qwee';
 
   @override

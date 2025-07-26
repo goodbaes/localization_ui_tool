@@ -262,6 +262,78 @@ abstract class AppLocalizations {
   /// **'Key cannot contain digits.'**
   String get keyCannotContainDigits;
 
+  /// No description provided for @noArbFilesFound.
+  ///
+  /// In en, this message translates to:
+  /// **'No .arb files found in the selected directory.'**
+  String get noArbFilesFound;
+
+  /// No description provided for @macOSPermissionErrorTitle.
+  ///
+  /// In en, this message translates to:
+  /// **'macOS Permission Error'**
+  String get macOSPermissionErrorTitle;
+
+  /// No description provided for @macOSPermissionErrorExplanation.
+  ///
+  /// In en, this message translates to:
+  /// **'It seems like the application doesn\'t have the necessary permissions to access the selected directory on macOS. Please follow these steps to grant Full Disk Access:'**
+  String get macOSPermissionErrorExplanation;
+
+  /// No description provided for @macOSPermissionErrorStepOne.
+  ///
+  /// In en, this message translates to:
+  /// **'1. Close the application.'**
+  String get macOSPermissionErrorStepOne;
+
+  /// No description provided for @macOSPermissionErrorStepTwo.
+  ///
+  /// In en, this message translates to:
+  /// **'2. Go to System Settings (or System Preferences) on your Mac.'**
+  String get macOSPermissionErrorStepTwo;
+
+  /// No description provided for @macOSPermissionErrorStepThree.
+  ///
+  /// In en, this message translates to:
+  /// **'3. Select Privacy & Security.'**
+  String get macOSPermissionErrorStepThree;
+
+  /// No description provided for @macOSPermissionErrorStepFour.
+  ///
+  /// In en, this message translates to:
+  /// **'4. Scroll down and find Full Disk Access.'**
+  String get macOSPermissionErrorStepFour;
+
+  /// No description provided for @macOSPermissionErrorStepFive.
+  ///
+  /// In en, this message translates to:
+  /// **'5. Click the lock icon to unlock settings and enter your administrator password.'**
+  String get macOSPermissionErrorStepFive;
+
+  /// No description provided for @macOSPermissionErrorStepSix.
+  ///
+  /// In en, this message translates to:
+  /// **'6. Click the \'+\' button to add a new application.'**
+  String get macOSPermissionErrorStepSix;
+
+  /// No description provided for @macOSPermissionErrorStepSeven.
+  ///
+  /// In en, this message translates to:
+  /// **'7. Navigate to your application (usually in build/macos/Build/Products/Debug/ or Release/ inside your project folder) and select it.'**
+  String get macOSPermissionErrorStepSeven;
+
+  /// No description provided for @macOSPermissionErrorStepEight.
+  ///
+  /// In en, this message translates to:
+  /// **'8. Ensure the toggle next to your application is turned on (blue).'**
+  String get macOSPermissionErrorStepEight;
+
+  /// No description provided for @macOSPermissionErrorButton.
+  ///
+  /// In en, this message translates to:
+  /// **'Show Instructions'**
+  String get macOSPermissionErrorButton;
+
   /// No description provided for @qwe.
   ///
   /// In en, this message translates to:

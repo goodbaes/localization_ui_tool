@@ -94,6 +94,51 @@ class AppLocalizationsEs extends AppLocalizations {
   String get keyCannotContainDigits => 'La clave no puede contener dígitos.';
 
   @override
+  String get noArbFilesFound =>
+      'No se encontraron archivos .arb en el directorio seleccionado.';
+
+  @override
+  String get macOSPermissionErrorTitle => 'Error de Permisos en macOS';
+
+  @override
+  String get macOSPermissionErrorExplanation =>
+      'Parece que la aplicación no tiene los permisos necesarios para acceder al directorio seleccionado en macOS. Siga estos pasos para otorgar Acceso Total al Disco:';
+
+  @override
+  String get macOSPermissionErrorStepOne => '1. Cierre la aplicación.';
+
+  @override
+  String get macOSPermissionErrorStepTwo =>
+      '2. Vaya a Configuración del Sistema (o Preferencias del Sistema) en su Mac.';
+
+  @override
+  String get macOSPermissionErrorStepThree =>
+      '3. Seleccione Privacidad y Seguridad.';
+
+  @override
+  String get macOSPermissionErrorStepFour =>
+      '4. Desplácese hacia abajo y busque Acceso Total al Disco.';
+
+  @override
+  String get macOSPermissionErrorStepFive =>
+      '5. Haga clic en el icono de candado para desbloquear la configuración e ingrese su contraseña de administrador.';
+
+  @override
+  String get macOSPermissionErrorStepSix =>
+      '6. Haga clic en el botón \'+\' para agregar una nueva aplicación.';
+
+  @override
+  String get macOSPermissionErrorStepSeven =>
+      '7. Navegue hasta su aplicación (generalmente en build/macos/Build/Products/Debug/ o Release/ dentro de la carpeta de su proyecto) y selecciónela.';
+
+  @override
+  String get macOSPermissionErrorStepEight =>
+      '8. Asegúrese de que el interruptor junto a su aplicación esté activado (azul).';
+
+  @override
+  String get macOSPermissionErrorButton => 'Mostrar Instrucciones';
+
+  @override
   String get qwe => 'qwerr';
 
   @override

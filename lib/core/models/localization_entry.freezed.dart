@@ -18,7 +18,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$LocalizationEntry {
   String get key => throw _privateConstructorUsedError;
-  Map<String, String> get values => throw _privateConstructorUsedError;
+  Map<String, String> get values =>
+      throw _privateConstructorUsedError; // locale -> translated text
+  String? get description => throw _privateConstructorUsedError;
 
   /// Create a copy of LocalizationEntry
   /// with the given fields replaced by the non-null parameter values.
@@ -34,7 +36,7 @@ abstract class $LocalizationEntryCopyWith<$Res> {
     $Res Function(LocalizationEntry) then,
   ) = _$LocalizationEntryCopyWithImpl<$Res, LocalizationEntry>;
   @useResult
-  $Res call({String key, Map<String, String> values});
+  $Res call({String key, Map<String, String> values, String? description});
 }
 
 /// @nodoc
@@ -51,7 +53,11 @@ class _$LocalizationEntryCopyWithImpl<$Res, $Val extends LocalizationEntry>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? key = null, Object? values = null}) {
+  $Res call({
+    Object? key = null,
+    Object? values = null,
+    Object? description = freezed,
+  }) {
     return _then(
       _value.copyWith(
             key: null == key
@@ -62,6 +68,10 @@ class _$LocalizationEntryCopyWithImpl<$Res, $Val extends LocalizationEntry>
                 ? _value.values
                 : values // ignore: cast_nullable_to_non_nullable
                       as Map<String, String>,
+            description: freezed == description
+                ? _value.description
+                : description // ignore: cast_nullable_to_non_nullable
+                      as String?,
           )
           as $Val,
     );
@@ -77,7 +87,7 @@ abstract class _$$$LocalizationEntryImplImplCopyWith<$Res>
   ) = __$$$LocalizationEntryImplImplCopyWithImpl<$Res>;
   @override
   @useResult
-  $Res call({String key, Map<String, String> values});
+  $Res call({String key, Map<String, String> values, String? description});
 }
 
 /// @nodoc
@@ -93,7 +103,11 @@ class __$$$LocalizationEntryImplImplCopyWithImpl<$Res>
   /// with the given fields replaced by the non-null parameter values.
   @pragma('vm:prefer-inline')
   @override
-  $Res call({Object? key = null, Object? values = null}) {
+  $Res call({
+    Object? key = null,
+    Object? values = null,
+    Object? description = freezed,
+  }) {
     return _then(
       _$$LocalizationEntryImplImpl(
         key: null == key
@@ -104,6 +118,10 @@ class __$$$LocalizationEntryImplImplCopyWithImpl<$Res>
             ? _value._values
             : values // ignore: cast_nullable_to_non_nullable
                   as Map<String, String>,
+        description: freezed == description
+            ? _value.description
+            : description // ignore: cast_nullable_to_non_nullable
+                  as String?,
       ),
     );
   }
@@ -115,6 +133,7 @@ class _$$LocalizationEntryImplImpl implements _$LocalizationEntryImpl {
   const _$$LocalizationEntryImplImpl({
     required this.key,
     required final Map<String, String> values,
+    this.description,
   }) : _values = values;
 
   @override
@@ -127,9 +146,13 @@ class _$$LocalizationEntryImplImpl implements _$LocalizationEntryImpl {
     return EqualUnmodifiableMapView(_values);
   }
 
+  // locale -> translated text
+  @override
+  final String? description;
+
   @override
   String toString() {
-    return 'LocalizationEntry(key: $key, values: $values)';
+    return 'LocalizationEntry(key: $key, values: $values, description: $description)';
   }
 
   @override
@@ -138,7 +161,9 @@ class _$$LocalizationEntryImplImpl implements _$LocalizationEntryImpl {
         (other.runtimeType == runtimeType &&
             other is _$$LocalizationEntryImplImpl &&
             (identical(other.key, key) || other.key == key) &&
-            const DeepCollectionEquality().equals(other._values, _values));
+            const DeepCollectionEquality().equals(other._values, _values) &&
+            (identical(other.description, description) ||
+                other.description == description));
   }
 
   @override
@@ -146,6 +171,7 @@ class _$$LocalizationEntryImplImpl implements _$LocalizationEntryImpl {
     runtimeType,
     key,
     const DeepCollectionEquality().hash(_values),
+    description,
   );
 
   /// Create a copy of LocalizationEntry
@@ -165,12 +191,15 @@ abstract class _$LocalizationEntryImpl implements LocalizationEntry {
   const factory _$LocalizationEntryImpl({
     required final String key,
     required final Map<String, String> values,
+    final String? description,
   }) = _$$LocalizationEntryImplImpl;
 
   @override
   String get key;
   @override
-  Map<String, String> get values;
+  Map<String, String> get values; // locale -> translated text
+  @override
+  String? get description;
 
   /// Create a copy of LocalizationEntry
   /// with the given fields replaced by the non-null parameter values.

@@ -66,11 +66,10 @@ To create executable files for various platforms:
     ```
     The executable will be located at `build/macos/Build/Products/Release/localization_ui_tool.app`.
 
+    add fullaccess to disk read/write in privacy&secure
+
 *   **For Linux:**
-    ```bash
-    flutter build linux
-    ```
-    The executable will be located at `build/linux/x64/release/bundle/localization_ui_tool`.
+    not tested yet
 
 ## Usage
 
@@ -100,4 +99,5 @@ When entering keys and values, the application performs validation against the A
 
 ### todo 
 
+- add plurals
 - add modified files in session list on home page for quick observe

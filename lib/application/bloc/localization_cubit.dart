@@ -1,5 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
+import 'package:localization_ui_tool/core/services/directory_service.dart';
 import 'package:localization_ui_tool/core/use_cases/get_all_entries_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/save_entry_use_case.dart';
 
@@ -17,14 +20,28 @@ class LocalizationLoaded extends LocalizationState {
 }
 
 class LocalizationError extends LocalizationState {
-  LocalizationError(this.message);
+  LocalizationError(this.message, {this.error});
   final String message;
+  final Object? error;
 }
 
 class LocalizationCubit extends Cubit<LocalizationState> {
-  LocalizationCubit({required this.getAll, required this.saveEntry}) : super(LocalizationInitial());
+  LocalizationCubit({required this.getAll, required this.saveEntry, required this.directoryService})
+    : super(LocalizationInitial()) {
+    _directorySubscription = directoryService.directoryPathStream.listen((path) {
+      loadEntries();
+    });
+  }
   final GetAllEntriesUseCase getAll;
   final SaveEntryUseCase saveEntry;
+  final DirectoryService directoryService;
+  late StreamSubscription<String?> _directorySubscription;
+
+  @override
+  Future<void> close() {
+    _directorySubscription.cancel();
+    return super.close();
+  }
 
   Future<void> loadEntries() async {
     try {
@@ -42,7 +59,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       await saveEntry(entry);
       await loadEntries(); // Reload entries after saving
     } catch (e) {
-      emit(LocalizationError('Failed to save entry: $e'));
+      emit(LocalizationError('Failed to save entry: $e', error: e));
     }
   }
 }
