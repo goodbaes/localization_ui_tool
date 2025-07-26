@@ -6,8 +6,8 @@ import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
 
 class EntryEditPage extends StatefulWidget {
+  const EntryEditPage({required this.entryKey, super.key});
   final String entryKey;
-  const EntryEditPage({super.key, required this.entryKey});
 
   @override
   State<EntryEditPage> createState() => _EntryEditPageState();
@@ -29,8 +29,8 @@ class _EntryEditPageState extends State<EntryEditPage> {
 
     // If it's a new entry, initialize with empty values for all supported locales
     if (widget.entryKey.isEmpty) {
-      _currentEntry = LocalizationEntry(key: '', values: {});
-      for (var locale in _supportedLocales) {
+      _currentEntry = const LocalizationEntry(key: '', values: {});
+      for (final locale in _supportedLocales) {
         _controllers[locale] = TextEditingController();
       }
     } else {
@@ -45,7 +45,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
           _keyController.text = _currentEntry!.key; // Set key controller text
 
           // Populate controllers for existing values and create for missing ones
-          for (var locale in _supportedLocales) {
+          for (final locale in _supportedLocales) {
             _controllers[locale] = TextEditingController(text: _currentEntry!.values[locale] ?? '');
           }
           setState(() {}); // Rebuild to show initial values
@@ -65,7 +65,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
   Future<void> _saveEntry() async {
     if (_currentEntry == null) return;
 
-    final String keyToSave = widget.entryKey.isEmpty ? _keyController.text : _currentEntry!.key;
+    final keyToSave = widget.entryKey.isEmpty ? _keyController.text : _currentEntry!.key;
     if (keyToSave.isEmpty) {
       ErrorDialog.show(context, context.l10n.keyCannotBeEmpty);
       return;
@@ -114,27 +114,10 @@ class _EntryEditPageState extends State<EntryEditPage> {
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
             _currentSnackBar = null;
 
-            // For new entries, pop after successful save, but defer to next frame
-            if (widget.entryKey.isEmpty) {
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(context).pop();
-              });
-            } else {
-              // Update _currentEntry if it was just saved and reloaded
-              _currentEntry = state.entries.firstWhere(
-                (entry) => entry.key == widget.entryKey,
-                orElse: () => LocalizationEntry(key: widget.entryKey, values: {}),
-              );
-              _keyController.text = _currentEntry!.key;
-              _currentEntry?.values.forEach((locale, text) {
-                if (_controllers.containsKey(locale)) {
-                  _controllers[locale]!.text = text;
-                } else {
-                  _controllers[locale] = TextEditingController(text: text);
-                }
-              });
-              setState(() {});
-            }
+            // Pop after successful save, but defer to next frame
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              Navigator.of(context).pop();
+            });
           } else if (state is LocalizationError) {
             // Dismiss the saving snackbar
             ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -144,11 +127,11 @@ class _EntryEditPageState extends State<EntryEditPage> {
           }
         },
         child: ListView(
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16),
           children: [
             if (widget.entryKey.isEmpty) // Show key input only for new entries
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: TextField(
                   controller: _keyController,
                   decoration: InputDecoration(
@@ -157,10 +140,10 @@ class _EntryEditPageState extends State<EntryEditPage> {
                   ),
                 ),
               ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 16),
             ..._supportedLocales.map((locale) {
               return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8.0),
+                padding: const EdgeInsets.symmetric(vertical: 8),
                 child: TextField(
                   controller: _controllers[locale],
                   decoration: InputDecoration(
@@ -169,7 +152,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
                   ),
                 ),
               );
-            }).toList(),
+            }),
           ],
         ),
       ),

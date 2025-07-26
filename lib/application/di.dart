@@ -10,7 +10,7 @@ import 'package:localization_ui_tool/infrastructure/repositories/arb_file_reposi
 import 'package:localization_ui_tool/infrastructure/repositories/local_settings_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-final getIt = GetIt.instance;
+final GetIt getIt = GetIt.instance;
 
 Future<void> setupDI() async {
   final prefs = await SharedPreferences.getInstance();

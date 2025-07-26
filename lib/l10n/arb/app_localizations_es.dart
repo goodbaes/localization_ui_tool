@@ -9,7 +9,7 @@ class AppLocalizationsEs extends AppLocalizations {
   AppLocalizationsEs([String locale = 'es']) : super(locale);
 
   @override
-  String get appTitle => 'Herramienta de UI de localización';
+  String get appTitle => 'Herramienta de UI de';
 
   @override
   String get search => 'Buscara';
@@ -43,4 +43,22 @@ class AppLocalizationsEs extends AppLocalizations {
 
   @override
   String get keyCannotBeEmpty => 'La clave no puede estar vacía';
+
+  @override
+  String get qwe => 'qwe';
+
+  @override
+  String get newKey => 'Nueva clave';
+
+  @override
+  String get add => 'Añadir';
+
+  @override
+  String get sessionAddedKeys => 'Claves añadidas en esta sesión';
+
+  @override
+  String get qweqw => 'asdasd';
+
+  @override
+  String get title_onboarding => 'holla';
 }

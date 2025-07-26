@@ -11,5 +11,11 @@
   "key": "Clave",
   "translation": "Traducción",
   "keyCannotBeEmpty": "La clave no puede estar vacía",
-  "qwe": "rrr"
+  "qwe": "qwe",
+  "newKey": "Nueva clave",
+  "add": "Añadir",
+  "sessionAddedKeys": "Claves añadidas en esta sesión",
+  "qweqw": "asdasd",
+  "title_onboarding": "holla",
+  "app": "app"
 }

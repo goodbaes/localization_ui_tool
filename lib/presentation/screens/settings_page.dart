@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
-import 'package:localization_ui_tool/presentation/widgets/toast.dart';
 
 class SettingsPage extends StatelessWidget {
   const SettingsPage({super.key});
@@ -16,9 +15,7 @@ class SettingsPage extends StatelessWidget {
       ),
       body: BlocConsumer<SettingsCubit, SettingsState>(
         listener: (context, state) {
-          if (state is SettingsLoaded) {
-            Toast.show(context, 'Settings saved!');
-          }
+          // No longer showing a toast for settings saved.
         },
         builder: (context, state) {
           if (state is SettingsInitial) {
@@ -26,7 +23,7 @@ class SettingsPage extends StatelessWidget {
             return const Center(child: CircularProgressIndicator());
           } else if (state is SettingsLoaded) {
             return Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -36,29 +33,16 @@ class SettingsPage extends StatelessWidget {
                     trailing: IconButton(
                       icon: const Icon(Icons.folder_open),
                       onPressed: () async {
-                        String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+                        final selectedDirectory = await FilePicker.platform.getDirectoryPath();
                         if (selectedDirectory != null) {
                           context.read<SettingsCubit>().update(
                             Settings(
                               directoryPath: selectedDirectory,
-                              autoSave: state.settings.autoSave,
                             ),
                           );
                         }
                       },
                     ),
-                  ),
-                  SwitchListTile(
-                    title: const Text('Auto Save'),
-                    value: state.settings.autoSave,
-                    onChanged: (value) {
-                      context.read<SettingsCubit>().update(
-                        Settings(
-                          directoryPath: state.settings.directoryPath,
-                          autoSave: value,
-                        ),
-                      );
-                    },
                   ),
                 ],
               ),

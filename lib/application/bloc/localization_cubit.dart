@@ -12,19 +12,19 @@ class LocalizationLoading extends LocalizationState {}
 class LocalizationSaving extends LocalizationState {}
 
 class LocalizationLoaded extends LocalizationState {
-  final List<LocalizationEntry> entries;
   LocalizationLoaded(this.entries);
+  final List<LocalizationEntry> entries;
 }
 
 class LocalizationError extends LocalizationState {
-  final String message;
   LocalizationError(this.message);
+  final String message;
 }
 
 class LocalizationCubit extends Cubit<LocalizationState> {
+  LocalizationCubit({required this.getAll, required this.saveEntry}) : super(LocalizationInitial());
   final GetAllEntriesUseCase getAll;
   final SaveEntryUseCase saveEntry;
-  LocalizationCubit({required this.getAll, required this.saveEntry}) : super(LocalizationInitial());
 
   Future<void> loadEntries() async {
     try {
@@ -32,7 +32,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       final list = await getAll();
       emit(LocalizationLoaded(list));
     } catch (e) {
-      emit(LocalizationError('Failed to load entries: ${e.toString()}'));
+      emit(LocalizationError('Failed to load entries: $e'));
     }
   }
 
@@ -42,7 +42,7 @@ class LocalizationCubit extends Cubit<LocalizationState> {
       await saveEntry(entry);
       await loadEntries(); // Reload entries after saving
     } catch (e) {
-      emit(LocalizationError('Failed to save entry: ${e.toString()}'));
+      emit(LocalizationError('Failed to save entry: $e'));
     }
   }
 }

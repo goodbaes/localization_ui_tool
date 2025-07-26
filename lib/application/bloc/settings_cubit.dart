@@ -7,14 +7,14 @@ abstract class SettingsState {}
 class SettingsInitial extends SettingsState {}
 
 class SettingsLoaded extends SettingsState {
-  final Settings settings;
   SettingsLoaded(this.settings);
+  final Settings settings;
 }
 
 class SettingsCubit extends Cubit<SettingsState> {
+  SettingsCubit({required this.getSettings, required this.saveSettings}) : super(SettingsInitial());
   final GetSettingsUseCase getSettings;
   final SaveSettingsUseCase saveSettings;
-  SettingsCubit({required this.getSettings, required this.saveSettings}) : super(SettingsInitial());
 
   Future<void> load() async {
     final settings = await getSettings();

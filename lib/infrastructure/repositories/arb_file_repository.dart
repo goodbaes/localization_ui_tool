@@ -5,13 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/core/repositories/localization_repository.dart';
 import 'package:localization_ui_tool/infrastructure/models/arb_parser.dart';
-import 'package:path/path.dart' as p;
 
 class ArbFileRepository implements LocalizationRepository {
+  ArbFileRepository({required this.directoryPathFuture, required this.parser});
   final Future<String?> directoryPathFuture;
   final ArbParser parser;
-
-  ArbFileRepository({required this.directoryPathFuture, required this.parser});
 
   @override
   Future<List<LocalizationEntry>> loadAll() async {
@@ -19,7 +17,7 @@ class ArbFileRepository implements LocalizationRepository {
     if (directoryPath == null || directoryPath.isEmpty) {
       return [];
     }
-    return compute(_parseAllFiles, { 'path': directoryPath });
+    return compute(_parseAllFiles, {'path': directoryPath});
   }
 
   static List<LocalizationEntry> _parseAllFiles(Map<String, String> args) {
@@ -27,13 +25,15 @@ class ArbFileRepository implements LocalizationRepository {
     if (!directory.existsSync()) {
       return [];
     }
-    final files = directory.listSync().whereType<File>().where((file) => file.path.endsWith('.arb'));
+    final files = directory.listSync().whereType<File>().where(
+      (file) => file.path.endsWith('.arb'),
+    );
 
-    final Map<String, Map<String, String>> entriesMap = {};
+    final entriesMap = <String, Map<String, String>>{};
 
     for (final file in files) {
       final content = file.readAsStringSync();
-      final Map<String, dynamic> arbData = json.decode(content);
+      final arbData = json.decode(content) as Map<String, dynamic>;
       final locale = arbData['@@locale'] as String;
 
       arbData.forEach((key, value) {
@@ -57,11 +57,13 @@ class ArbFileRepository implements LocalizationRepository {
     if (!directory.existsSync()) {
       return;
     }
-    final files = directory.listSync().whereType<File>().where((file) => file.path.endsWith('.arb'));
+    final files = directory.listSync().whereType<File>().where(
+      (file) => file.path.endsWith('.arb'),
+    );
 
     for (final file in files) {
       final content = file.readAsStringSync();
-      final Map<String, dynamic> arbData = json.decode(content);
+      final arbData = json.decode(content) as Map<String, dynamic>;
       final locale = arbData['@@locale'] as String;
 
       if (entry.values.containsKey(locale)) {

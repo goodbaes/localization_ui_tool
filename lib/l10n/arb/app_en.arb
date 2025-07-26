@@ -11,5 +11,11 @@
   "key": "Key",
   "translation": "Translation",
   "keyCannotBeEmpty": "Key cannot be empty",
-  "qwe": "rrr"
+  "qwe": "qwe",
+  "newKey": "New Key",
+  "add": "Add",
+  "sessionAddedKeys": "Keys added in this session",
+  "qweqw": "asdasd",
+  "title_onboarding": "hello",
+  "app": "app"
 }

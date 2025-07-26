@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Localization UI Toolqqqqqwesdasd asd '**
+  /// **'Localization UI Tool'**
   String get appTitle;
 
   /// No description provided for @search.
@@ -163,6 +163,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Key cannot be empty'**
   String get keyCannotBeEmpty;
+
+  /// No description provided for @qwe.
+  ///
+  /// In en, this message translates to:
+  /// **'qwe'**
+  String get qwe;
+
+  /// No description provided for @newKey.
+  ///
+  /// In en, this message translates to:
+  /// **'New Key'**
+  String get newKey;
+
+  /// No description provided for @add.
+  ///
+  /// In en, this message translates to:
+  /// **'Add'**
+  String get add;
+
+  /// No description provided for @sessionAddedKeys.
+  ///
+  /// In en, this message translates to:
+  /// **'Keys added in this session'**
+  String get sessionAddedKeys;
+
+  /// No description provided for @qweqw.
+  ///
+  /// In en, this message translates to:
+  /// **'asdasd'**
+  String get qweqw;
+
+  /// No description provided for @title_onboarding.
+  ///
+  /// In en, this message translates to:
+  /// **'hello'**
+  String get title_onboarding;
 }
 
 class _AppLocalizationsDelegate

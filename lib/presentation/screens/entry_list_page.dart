@@ -5,8 +5,23 @@ import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 
-class EntryListPage extends StatelessWidget {
+class EntryListPage extends StatefulWidget {
   const EntryListPage({super.key});
+
+  @override
+  State<EntryListPage> createState() => _EntryListPageState();
+}
+
+class _EntryListPageState extends State<EntryListPage> {
+  final TextEditingController _newKeyController = TextEditingController();
+  List<LocalizationEntry> _filteredEntries = [];
+  final List<String> _sessionAddedKeys = [];
+
+  @override
+  void dispose() {
+    _newKeyController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +31,10 @@ class EntryListPage extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.settings),
-            onPressed: () => context.push('/settings'),
+            onPressed: () {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              context.push('/settings');
+            },
           ),
         ],
       ),
@@ -28,29 +46,88 @@ class EntryListPage extends StatelessWidget {
           } else if (state is LocalizationLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LocalizationLoaded) {
+            // Initialize _filteredEntries when LocalizationLoaded state is received
+            _filteredEntries = state.entries;
             return Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      labelText: context.l10n.search,
-                      border: const OutlineInputBorder(),
-                    ),
-                    onChanged: (query) {
-                      // TODO: Implement search functionality
-                    },
+                  padding: const EdgeInsets.all(8),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: TextField(
+                          controller: _newKeyController,
+                          decoration: InputDecoration(
+                            labelText: context.l10n.newKey,
+                            border: const OutlineInputBorder(),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      ElevatedButton(
+                        onPressed: () {
+                          final newKey = _newKeyController.text.trim();
+                          if (newKey.isNotEmpty) {
+                            final existingEntry = state.entries.firstWhere(
+                              (entry) => entry.key == newKey,
+                              orElse: () => const LocalizationEntry(key: '', values: {}),
+                            );
+
+                            if (existingEntry.key.isNotEmpty) {
+                              // Key exists, show only this entry
+                              setState(() {
+                                _filteredEntries = [existingEntry];
+                              });
+                            } else {
+                              // Key does not exist, navigate to add new entry
+                              context.push('/edit/$newKey');
+                              setState(() {
+                                _sessionAddedKeys.add(newKey);
+                              });
+                            }
+                          }
+                        },
+                        child: Text(context.l10n.add),
+                      ),
+                    ],
                   ),
                 ),
+                if (_sessionAddedKeys.isNotEmpty)
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: Text(
+                          context.l10n.sessionAddedKeys,
+                          style: Theme.of(context).textTheme.titleMedium,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 100, // Adjust height as needed
+                        child: ListView.builder(
+                          itemCount: _sessionAddedKeys.length,
+                          itemBuilder: (context, index) {
+                            final key = _sessionAddedKeys[index];
+                            return ListTile(
+                              title: Text(key),
+                              onTap: () => context.push('/edit/$key'),
+                            );
+                          },
+                        ),
+                      ),
+                      const Divider(),
+                    ],
+                  ),
                 Expanded(
                   child: ListView.builder(
-                    itemCount: state.entries.length,
+                    itemCount: _filteredEntries.length,
                     itemBuilder: (context, index) {
-                      final entry = state.entries[index];
+                      final entry = _filteredEntries[index];
                       return ListTile(
                         title: Text(entry.key),
                         subtitle: Text(entry.values.values.join(', ')),
-                        onTap: () => context.push('/edit/${entry.key}'), // Changed from go to push
+                        onTap: () => context.push('/edit/${entry.key}'),
                       );
                     },
                   ),
@@ -62,12 +139,6 @@ class EntryListPage extends StatelessWidget {
           }
           return Center(child: Text(context.l10n.errorLoadingEntries));
         },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          context.push('/add_entry');
-        },
-        child: const Icon(Icons.add),
       ),
     );
   }
