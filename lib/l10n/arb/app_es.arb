@@ -25,11 +25,14 @@
   "notSet": "No establecido",
   "error": "Error",
   "ok": "OK",
-  "qweg": "r",
-  "rrrrrr": "qwe",
   "qwe2": "qwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as dd",
-  "keyInvalidCharacters": "La clave solo puede contener caracteres alfanuméricos y guiones bajos.",
+  "keyInvalidCharacters": "La clave solo puede contener caracteres  y guiones bajos.",
   "translationCannotBeEmpty": "La traducción no puede estar vacía.",
   "keyCannotStartWithAt": "La clave no puede empezar con \"@\".",
-  "test": "qwe"
+  "language": "Idioma",
+  "keyCannotContainDigits": "La clave no puede contener dígitos.",
+  "qq": "a",
+  "test": "test",
+  "theme": "Tema",
+  "www": "www"
 }

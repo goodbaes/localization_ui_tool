@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
+import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -39,10 +40,45 @@ class SettingsPage extends StatelessWidget {
                           context.read<SettingsCubit>().update(
                             Settings(
                               directoryPath: selectedDirectory,
+                              locale: state.settings.locale,
                             ),
                           );
                         }
                       },
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(context.l10n.language),
+                    trailing: DropdownButton<Locale>(
+                      value: Localizations.localeOf(context),
+                      onChanged: (Locale? newLocale) {
+                        if (newLocale != null) {
+                          context.read<SettingsCubit>().updateLocale(newLocale);
+                        }
+                      },
+                      items: AppLocalizations.supportedLocales.map<DropdownMenuItem<Locale>>((Locale locale) {
+                        return DropdownMenuItem<Locale>(
+                          value: locale,
+                          child: Text(locale.languageCode),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text('Theme'), // TODO: Localize this string
+                    trailing: DropdownButton<ThemeMode>(
+                      value: state.settings.themeMode ?? ThemeMode.system,
+                      onChanged: (ThemeMode? newThemeMode) {
+                        if (newThemeMode != null) {
+                          context.read<SettingsCubit>().updateThemeMode(newThemeMode);
+                        }
+                      },
+                      items: ThemeMode.values.map<DropdownMenuItem<ThemeMode>>((ThemeMode themeMode) {
+                        return DropdownMenuItem<ThemeMode>(
+                          value: themeMode,
+                          child: Text(themeMode.toString().split('.').last), // Display enum name
+                        );
+                      }).toList(),
                     ),
                   ),
                 ],

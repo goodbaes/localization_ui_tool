@@ -72,51 +72,12 @@ class _EntryListPageState extends State<EntryListPage> {
                               },
                             ),
                           ),
+                          onSubmitted: (value) => _handleAddKey(),
                         ),
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: () async {
-                          final newKey = _newKeyController.text.trim();
-                          final validationError = ArbValidator.validateKey(context, newKey);
-                          if (validationError != null) {
-                            ErrorDialog.show(context, validationError);
-                            return;
-                          }
-                          if (newKey.isNotEmpty) {
-                            final existingEntry = state.entries.firstWhere(
-                              (entry) => entry.key == newKey,
-                              orElse: () => const LocalizationEntry(key: '', values: {}),
-                            );
-
-                            if (existingEntry.key.isNotEmpty) {
-                              // Key exists, show only this entry and highlight collision
-                              setState(() {
-                                _collidedKey = newKey;
-                                _newKeyController.clear();
-                              });
-                            } else {
-                              // Key does not exist, navigate to add new entry
-                              final result = await context.push(
-                                '/edit/$newKey',
-                                extra: SessionKeyStatus.newKey,
-                              );
-                              if (result is SessionKey) {
-                                setState(() {
-                                  // Remove if already exists (e.g., if it was modified from new to modified)
-                                  _sessionAddedKeys.removeWhere(
-                                    (element) => element.key == result.key,
-                                  );
-                                  _sessionAddedKeys.add(result);
-                                });
-                              }
-                              setState(() {
-                                _collidedKey = null; // Clear collision highlight
-                                _newKeyController.clear();
-                              });
-                            }
-                          }
-                        },
+                        onPressed: _handleAddKey,
                         child: Text(context.l10n.add),
                       ),
                     ],
@@ -149,12 +110,7 @@ class _EntryListPageState extends State<EntryListPage> {
                             itemBuilder: (context, index) {
                               final sessionKey = _sessionAddedKeys[index];
                               return ListTile(
-                                leading: Icon(
-                                  sessionKey.status == SessionKeyStatus.newKey
-                                      ? Icons.add_circle_outline
-                                      : Icons.edit,
-                                  size: 18,
-                                ),
+                                leading: Text(String.fromCharCode(2714)),
                                 title: Text(sessionKey.key),
                                 onTap: () => context.push(
                                   '/edit/${sessionKey.key}',
@@ -177,5 +133,48 @@ class _EntryListPageState extends State<EntryListPage> {
         },
       ),
     );
+  }
+
+  Future<void> _handleAddKey() async {
+    final newKey = _newKeyController.text.trim();
+    final validationError = ArbValidator.validateKey(context, newKey);
+    if (validationError != null) {
+      ErrorDialog.show(context, validationError);
+      return;
+    }
+    if (newKey.isNotEmpty) {
+      final existingEntry = (context.read<LocalizationCubit>().state as LocalizationLoaded).entries
+          .firstWhere(
+            (entry) => entry.key == newKey,
+            orElse: () => const LocalizationEntry(key: '', values: {}),
+          );
+
+      if (existingEntry.key.isNotEmpty) {
+        // Key exists, show only this entry and highlight collision
+        setState(() {
+          _collidedKey = newKey;
+          _newKeyController.clear();
+        });
+      } else {
+        // Key does not exist, navigate to add new entry
+        final result = await context.push(
+          '/edit/$newKey',
+          extra: SessionKeyStatus.newKey,
+        );
+        if (result is SessionKey) {
+          setState(() {
+            // Remove if already exists (e.g., if it was modified from new to modified)
+            _sessionAddedKeys.removeWhere(
+              (element) => element.key == result.key,
+            );
+            _sessionAddedKeys.add(result);
+          });
+        }
+        setState(() {
+          _collidedKey = null; // Clear collision highlight
+          _newKeyController.clear();
+        });
+      }
+    }
   }
 }

@@ -232,34 +232,10 @@ abstract class AppLocalizations {
   /// **'OK'**
   String get ok;
 
-  /// No description provided for @qwe.
-  ///
-  /// In en, this message translates to:
-  /// **'qwer'**
-  String get qwe;
-
-  /// No description provided for @qweg.
-  ///
-  /// In en, this message translates to:
-  /// **'r'**
-  String get qweg;
-
-  /// No description provided for @rrrrrr.
-  ///
-  /// In en, this message translates to:
-  /// **'qwe'**
-  String get rrrrrr;
-
-  /// No description provided for @qwe2.
-  ///
-  /// In en, this message translates to:
-  /// **'rqwer'**
-  String get qwe2;
-
   /// No description provided for @keyInvalidCharacters.
   ///
   /// In en, this message translates to:
-  /// **'Key can only contain alphanumeric characters and underscores.'**
+  /// **'Key can only contain characters and underscores.'**
   String get keyInvalidCharacters;
 
   /// No description provided for @translationCannotBeEmpty.
@@ -273,6 +249,48 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Key cannot start with \"@\".'**
   String get keyCannotStartWithAt;
+
+  /// No description provided for @language.
+  ///
+  /// In en, this message translates to:
+  /// **'Language'**
+  String get language;
+
+  /// No description provided for @keyCannotContainDigits.
+  ///
+  /// In en, this message translates to:
+  /// **'Key cannot contain digits.'**
+  String get keyCannotContainDigits;
+
+  /// No description provided for @qwe.
+  ///
+  /// In en, this message translates to:
+  /// **'qwee'**
+  String get qwe;
+
+  /// No description provided for @qq.
+  ///
+  /// In en, this message translates to:
+  /// **'q'**
+  String get qq;
+
+  /// No description provided for @test.
+  ///
+  /// In en, this message translates to:
+  /// **'test'**
+  String get test;
+
+  /// No description provided for @theme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme'**
+  String get theme;
+
+  /// No description provided for @www.
+  ///
+  /// In en, this message translates to:
+  /// **'www'**
+  String get www;
 }
 
 class _AppLocalizationsDelegate

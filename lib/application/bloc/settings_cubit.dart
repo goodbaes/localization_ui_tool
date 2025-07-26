@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/save_settings_use_case.dart';
@@ -24,5 +25,19 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<void> update(Settings settings) async {
     await saveSettings(settings);
     emit(SettingsLoaded(settings));
+  }
+
+  Future<void> updateLocale(Locale locale) async {
+    final currentSettings = (state as SettingsLoaded).settings;
+    final updatedSettings = currentSettings.copyWith(locale: locale);
+    await saveSettings(updatedSettings);
+    emit(SettingsLoaded(updatedSettings));
+  }
+
+  Future<void> updateThemeMode(ThemeMode themeMode) async {
+    final currentSettings = (state as SettingsLoaded).settings;
+    final updatedSettings = currentSettings.copyWith(themeMode: themeMode);
+    await saveSettings(updatedSettings);
+    emit(SettingsLoaded(updatedSettings));
   }
 }

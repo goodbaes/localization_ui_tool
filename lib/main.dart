@@ -30,19 +30,31 @@ class MyApp extends StatelessWidget {
           create: (context) => SettingsCubit(
             getSettings: getIt(),
             saveSettings: getIt(),
-          ),
+          )..load(), // Load settings when the app starts
         ),
       ],
-      child: MaterialApp.router(
-        title: AppLocalizations.of(context)?.appTitle,
-        routerConfig: router,
-        localizationsDelegates: const [
-          AppLocalizations.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: AppLocalizations.supportedLocales,
+      child: BlocBuilder<SettingsCubit, SettingsState>(
+        builder: (context, state) {
+          Locale? currentLocale;
+          if (state is SettingsLoaded) {
+            currentLocale = state.settings.locale;
+          }
+          return MaterialApp.router(
+            title: AppLocalizations.of(context)?.appTitle,
+            routerConfig: router,
+            locale: currentLocale, // Use the locale from settings
+            localizationsDelegates: const [
+              AppLocalizations.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: AppLocalizations.supportedLocales,
+            theme: ThemeData.light(),
+            darkTheme: ThemeData.dark(),
+            themeMode: state is SettingsLoaded ? state.settings.themeMode : ThemeMode.system,
+          );
+        },
       ),
     );
   }

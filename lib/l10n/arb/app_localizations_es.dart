@@ -78,25 +78,33 @@ class AppLocalizationsEs extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get qwe => 'qwerr';
-
-  @override
-  String get qweg => 'r';
-
-  @override
-  String get rrrrrr => 'qwe';
-
-  @override
-  String get qwe2 =>
-      'qwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as ddqwea sd asd as dd';
-
-  @override
   String get keyInvalidCharacters =>
-      'La clave solo puede contener caracteres alfanuméricos y guiones bajos.';
+      'La clave solo puede contener caracteres  y guiones bajos.';
 
   @override
   String get translationCannotBeEmpty => 'La traducción no puede estar vacía.';
 
   @override
   String get keyCannotStartWithAt => 'La clave no puede empezar con \"@\".';
+
+  @override
+  String get language => 'Idioma';
+
+  @override
+  String get keyCannotContainDigits => 'La clave no puede contener dígitos.';
+
+  @override
+  String get qwe => 'qwerr';
+
+  @override
+  String get qq => 'a';
+
+  @override
+  String get test => 'test';
+
+  @override
+  String get theme => 'Tema';
+
+  @override
+  String get www => 'www';
 }

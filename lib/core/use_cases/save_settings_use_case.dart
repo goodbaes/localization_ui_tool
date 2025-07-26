@@ -8,5 +8,11 @@ class SaveSettingsUseCase {
     if (settings.directoryPath != null) {
       await repo.setDirectoryPath(settings.directoryPath!);
     }
+    if (settings.locale != null) {
+      await repo.setLocale(settings.locale!);
+    }
+    if (settings.themeMode != null) {
+      await repo.setThemeMode(settings.themeMode!);
+    }
   }
 }

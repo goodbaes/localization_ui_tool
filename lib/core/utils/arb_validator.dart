@@ -11,7 +11,7 @@ class ArbValidator {
     if (key.startsWith('@')) {
       return l10n.keyCannotStartWithAt;
     }
-    if (!RegExp(r'^[a-zA-Z0-9_]+$').hasMatch(key)) {
+    if (!RegExp(r'^[a-zA-Z_]+$').hasMatch(key)) {
       return l10n.keyInvalidCharacters;
     }
     return null;

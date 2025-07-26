@@ -77,24 +77,33 @@ class AppLocalizationsRu extends AppLocalizations {
   String get ok => 'ОК';
 
   @override
-  String get qwe => 'qwerr';
-
-  @override
-  String get qweg => 'r';
-
-  @override
-  String get rrrrrr => 'qe';
-
-  @override
-  String get qwe2 => 'qwe';
-
-  @override
   String get keyInvalidCharacters =>
-      'Ключ может содержать только буквенно-цифровые символы и подчеркивания.';
+      'Ключ может содержать только символы и подчеркивания.';
 
   @override
   String get translationCannotBeEmpty => 'Перевод не может быть пустым.';
 
   @override
   String get keyCannotStartWithAt => 'Ключ не может начинаться с \"@\".';
+
+  @override
+  String get language => 'Язык';
+
+  @override
+  String get keyCannotContainDigits => 'Ключ не может содержать цифры.';
+
+  @override
+  String get qwe => 'qwee';
+
+  @override
+  String get qq => 'q';
+
+  @override
+  String get test => 'тест';
+
+  @override
+  String get theme => 'Тема';
+
+  @override
+  String get www => 'www';
 }

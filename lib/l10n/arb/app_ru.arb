@@ -22,12 +22,14 @@
   "notSet": "Не установлено",
   "error": "Ошибка",
   "ok": "ОК",
-  "qwe": "qwerr",
-  "qweg": "r",
-  "rrrrrr": "qe",
-  "qwe2": "qwe",
-  "keyInvalidCharacters": "Ключ может содержать только буквенно-цифровые символы и подчеркивания.",
+  "keyInvalidCharacters": "Ключ может содержать только символы и подчеркивания.",
   "translationCannotBeEmpty": "Перевод не может быть пустым.",
   "keyCannotStartWithAt": "Ключ не может начинаться с \"@\".",
-  "test": "qwe"
+  "language": "Язык",
+  "keyCannotContainDigits": "Ключ не может содержать цифры.",
+  "qwe": "qwee",
+  "qq": "q",
+  "test": "тест",
+  "theme": "Тема",
+  "www": "www"
 }

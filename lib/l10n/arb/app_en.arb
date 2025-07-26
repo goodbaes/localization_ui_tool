@@ -22,12 +22,14 @@
   "notSet": "Not set",
   "error": "Error",
   "ok": "OK",
-  "qwe": "qwer",
-  "qweg": "r",
-  "rrrrrr": "qwe",
-  "qwe2": "rqwer",
-  "keyInvalidCharacters": "Key can only contain alphanumeric characters and underscores.",
+  "keyInvalidCharacters": "Key can only contain characters and underscores.",
   "translationCannotBeEmpty": "Translation cannot be empty.",
   "keyCannotStartWithAt": "Key cannot start with \"@\".",
-  "test": "qwew"
+  "language": "Language",
+  "keyCannotContainDigits": "Key cannot contain digits.",
+  "qwe": "qwee",
+  "qq": "q",
+  "test": "test",
+  "theme": "Theme",
+  "www": "www"
 }

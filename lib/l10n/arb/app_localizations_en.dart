@@ -77,24 +77,33 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ok => 'OK';
 
   @override
-  String get qwe => 'qwer';
-
-  @override
-  String get qweg => 'r';
-
-  @override
-  String get rrrrrr => 'qwe';
-
-  @override
-  String get qwe2 => 'rqwer';
-
-  @override
   String get keyInvalidCharacters =>
-      'Key can only contain alphanumeric characters and underscores.';
+      'Key can only contain characters and underscores.';
 
   @override
   String get translationCannotBeEmpty => 'Translation cannot be empty.';
 
   @override
   String get keyCannotStartWithAt => 'Key cannot start with \"@\".';
+
+  @override
+  String get language => 'Language';
+
+  @override
+  String get keyCannotContainDigits => 'Key cannot contain digits.';
+
+  @override
+  String get qwe => 'qwee';
+
+  @override
+  String get qq => 'q';
+
+  @override
+  String get test => 'test';
+
+  @override
+  String get theme => 'Theme';
+
+  @override
+  String get www => 'www';
 }
