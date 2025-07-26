@@ -29,7 +29,7 @@
 
 1.  **Клонируйте репозиторий:**
     ```bash
-    git clone <URL_ВАШЕГО_РЕПОЗИТОРИЯ>
+    git clone https://github.com/goodbaes/localization_ui_tool.git
     cd localization_ui_tool
     ```
 2.  **Получите зависимости:**
