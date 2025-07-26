@@ -96,3 +96,8 @@ To create executable files for various platforms:
 ### Validation
 
 When entering keys and values, the application performs validation against the ARB format. In case of errors, appropriate messages will be displayed.
+
+
+### todo 
+
+- add modified files in session list on home page for quick observe
