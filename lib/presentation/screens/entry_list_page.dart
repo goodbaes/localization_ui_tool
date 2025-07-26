@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
+import 'package:localization_ui_tool/core/utils/arb_validator.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
+import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
 
 class EntryListPage extends StatefulWidget {
   const EntryListPage({super.key});
@@ -14,8 +16,8 @@ class EntryListPage extends StatefulWidget {
 
 class _EntryListPageState extends State<EntryListPage> {
   final TextEditingController _newKeyController = TextEditingController();
-  List<LocalizationEntry> _filteredEntries = [];
   final List<String> _sessionAddedKeys = [];
+  String? _collidedKey;
 
   @override
   void dispose() {
@@ -46,8 +48,6 @@ class _EntryListPageState extends State<EntryListPage> {
           } else if (state is LocalizationLoading) {
             return const Center(child: CircularProgressIndicator());
           } else if (state is LocalizationLoaded) {
-            // Initialize _filteredEntries when LocalizationLoaded state is received
-            _filteredEntries = state.entries;
             return Column(
               children: [
                 Padding(
@@ -67,6 +67,11 @@ class _EntryListPageState extends State<EntryListPage> {
                       ElevatedButton(
                         onPressed: () {
                           final newKey = _newKeyController.text.trim();
+                          final validationError = ArbValidator.validateKey(newKey);
+                          if (validationError != null) {
+                            ErrorDialog.show(context, validationError);
+                            return;
+                          }
                           if (newKey.isNotEmpty) {
                             final existingEntry = state.entries.firstWhere(
                               (entry) => entry.key == newKey,
@@ -74,15 +79,18 @@ class _EntryListPageState extends State<EntryListPage> {
                             );
 
                             if (existingEntry.key.isNotEmpty) {
-                              // Key exists, show only this entry
+                              // Key exists, show only this entry and highlight collision
                               setState(() {
-                                _filteredEntries = [existingEntry];
+                                _collidedKey = newKey;
+                                _newKeyController.clear();
                               });
                             } else {
                               // Key does not exist, navigate to add new entry
                               context.push('/edit/$newKey');
                               setState(() {
                                 _sessionAddedKeys.add(newKey);
+                                _collidedKey = null; // Clear collision highlight
+                                _newKeyController.clear();
                               });
                             }
                           }
@@ -92,46 +100,42 @@ class _EntryListPageState extends State<EntryListPage> {
                     ],
                   ),
                 ),
+                if (_collidedKey != null)
+                  ListTile(
+                    title: Text(
+                      '${String.fromCharCode(0x21AA)} ${context.l10n.keyExists}: $_collidedKey',
+                      style: const TextStyle(color: Colors.red),
+                    ),
+                    onTap: () => context.push('/edit/$_collidedKey'),
+                  ),
                 if (_sessionAddedKeys.isNotEmpty)
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Padding(
-                        padding: const EdgeInsets.all(8),
-                        child: Text(
-                          context.l10n.sessionAddedKeys,
-                          style: Theme.of(context).textTheme.titleMedium,
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8),
+                          child: Text(
+                            context.l10n.sessionAddedKeys,
+                            style: Theme.of(context).textTheme.titleMedium,
+                          ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 100, // Adjust height as needed
-                        child: ListView.builder(
-                          itemCount: _sessionAddedKeys.length,
-                          itemBuilder: (context, index) {
-                            final key = _sessionAddedKeys[index];
-                            return ListTile(
-                              title: Text(key),
-                              onTap: () => context.push('/edit/$key'),
-                            );
-                          },
+                        Expanded(
+                          child: ListView.builder(
+                            itemCount: _sessionAddedKeys.length,
+                            itemBuilder: (context, index) {
+                              final key = _sessionAddedKeys[index];
+                              return ListTile(
+                                title: Text(key),
+                                onTap: () => context.push('/edit/$key'),
+                              );
+                            },
+                          ),
                         ),
-                      ),
-                      const Divider(),
-                    ],
+                        const Divider(),
+                      ],
+                    ),
                   ),
-                Expanded(
-                  child: ListView.builder(
-                    itemCount: _filteredEntries.length,
-                    itemBuilder: (context, index) {
-                      final entry = _filteredEntries[index];
-                      return ListTile(
-                        title: Text(entry.key),
-                        subtitle: Text(entry.values.values.join(', ')),
-                        onTap: () => context.push('/edit/${entry.key}'),
-                      );
-                    },
-                  ),
-                ),
               ],
             );
           } else if (state is LocalizationSaving) {

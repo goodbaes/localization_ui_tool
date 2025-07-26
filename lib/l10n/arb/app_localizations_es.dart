@@ -57,8 +57,26 @@ class AppLocalizationsEs extends AppLocalizations {
   String get sessionAddedKeys => 'Claves añadidas en esta sesión';
 
   @override
+  String get keyExists => 'La clave ya existe';
+
+  @override
   String get qweqw => 'asdasd';
 
   @override
   String get title_onboarding => 'holla';
+
+  @override
+  String get app => 'app';
+
+  @override
+  String get start => 'start';
+
+  @override
+  String get r => 'r';
+
+  @override
+  String get tt => 'tt';
+
+  @override
+  String get title => 'asd';
 }

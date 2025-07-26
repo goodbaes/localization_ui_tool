@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get appTitle => 'Localization UI Tool';
+  String get appTitle => 'Localization UI Tools';
 
   @override
   String get search => 'Search';
@@ -56,8 +56,26 @@ class AppLocalizationsEn extends AppLocalizations {
   String get sessionAddedKeys => 'Keys added in this session';
 
   @override
+  String get keyExists => 'Key already exists';
+
+  @override
   String get qweqw => 'asdasd';
 
   @override
   String get title_onboarding => 'hello';
+
+  @override
+  String get app => 'app';
+
+  @override
+  String get start => 'start';
+
+  @override
+  String get r => 'r';
+
+  @override
+  String get tt => 'tt';
+
+  @override
+  String get title => 'asd';
 }

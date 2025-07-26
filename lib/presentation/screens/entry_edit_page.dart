@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
+import 'package:localization_ui_tool/core/utils/arb_validator.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
 
@@ -66,15 +67,24 @@ class _EntryEditPageState extends State<EntryEditPage> {
     if (_currentEntry == null) return;
 
     final keyToSave = widget.entryKey.isEmpty ? _keyController.text : _currentEntry!.key;
-    if (keyToSave.isEmpty) {
-      ErrorDialog.show(context, context.l10n.keyCannotBeEmpty);
+
+    // Validate key
+    final keyValidationError = ArbValidator.validateKey(keyToSave);
+    if (keyValidationError != null) {
+      ErrorDialog.show(context, keyValidationError);
       return;
     }
 
     final updatedValues = <String, String>{};
-    _controllers.forEach((locale, controller) {
-      updatedValues[locale] = controller.text;
-    });
+    for (final locale in _supportedLocales) {
+      final value = _controllers[locale]?.text ?? '';
+      final valueValidationError = ArbValidator.validateValue(value);
+      if (valueValidationError != null) {
+        ErrorDialog.show(context, '${locale.toUpperCase()}: $valueValidationError');
+        return;
+      }
+      updatedValues[locale] = value;
+    }
 
     final updatedEntry = LocalizationEntry(
       key: keyToSave,
@@ -90,7 +100,9 @@ class _EntryEditPageState extends State<EntryEditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.entryKey.isEmpty ? context.l10n.addEntry : context.l10n.editEntry(widget.entryKey)),
+        title: Text(
+          widget.entryKey.isEmpty ? context.l10n.addEntry : context.l10n.editEntry(widget.entryKey),
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),

@@ -1,6 +1,6 @@
 {
   "@@locale": "en",
-  "appTitle": "Localization UI Tool",
+  "appTitle": "Localization UI Tools",
   "search": "Search",
   "errorLoadingEntries": "Error loading entries",
   "editEntry": "Edit {entryKey}",
@@ -15,7 +15,12 @@
   "newKey": "New Key",
   "add": "Add",
   "sessionAddedKeys": "Keys added in this session",
+  "keyExists": "Key already exists",
   "qweqw": "asdasd",
   "title_onboarding": "hello",
-  "app": "app"
+  "app": "app",
+  "start": "start",
+  "r": "r",
+  "tt": "tt",
+  "title": "asd"
 }

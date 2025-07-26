@@ -15,7 +15,12 @@
   "newKey": "Nueva clave",
   "add": "Añadir",
   "sessionAddedKeys": "Claves añadidas en esta sesión",
+  "keyExists": "La clave ya existe",
   "qweqw": "asdasd",
   "title_onboarding": "holla",
-  "app": "app"
+  "app": "app",
+  "start": "start",
+  "r": "r",
+  "tt": "tt",
+  "title": "asd"
 }

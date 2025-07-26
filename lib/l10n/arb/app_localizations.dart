@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// No description provided for @appTitle.
   ///
   /// In en, this message translates to:
-  /// **'Localization UI Tool'**
+  /// **'Localization UI Tools'**
   String get appTitle;
 
   /// No description provided for @search.
@@ -188,6 +188,12 @@ abstract class AppLocalizations {
   /// **'Keys added in this session'**
   String get sessionAddedKeys;
 
+  /// No description provided for @keyExists.
+  ///
+  /// In en, this message translates to:
+  /// **'Key already exists'**
+  String get keyExists;
+
   /// No description provided for @qweqw.
   ///
   /// In en, this message translates to:
@@ -199,6 +205,36 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'hello'**
   String get title_onboarding;
+
+  /// No description provided for @app.
+  ///
+  /// In en, this message translates to:
+  /// **'app'**
+  String get app;
+
+  /// No description provided for @start.
+  ///
+  /// In en, this message translates to:
+  /// **'start'**
+  String get start;
+
+  /// No description provided for @r.
+  ///
+  /// In en, this message translates to:
+  /// **'r'**
+  String get r;
+
+  /// No description provided for @tt.
+  ///
+  /// In en, this message translates to:
+  /// **'tt'**
+  String get tt;
+
+  /// No description provided for @title.
+  ///
+  /// In en, this message translates to:
+  /// **'asd'**
+  String get title;
 }
 
 class _AppLocalizationsDelegate
