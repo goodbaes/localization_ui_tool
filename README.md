@@ -1,99 +1,98 @@
 # Localization UI Tool
 
-## Описание
+## Description
 
-**Localization UI Tool** — это настольное приложение на Flutter, разработанное для упрощения управления файлами локализации в формате ARB (Application Resource Bundle). Оно предоставляет удобный интерфейс для добавления, редактирования и валидации локализационных ключей и их переводов.
+**Localization UI Tool** is a Flutter desktop application designed to simplify the management of localization files in ARB (Application Resource Bundle) format. It provides a convenient interface for adding, editing, and validating localization keys and their translations.
 
-## Архитектура
+## Architecture
 
-Проект разделен на четыре основных модуля:
+The project is divided into four main modules:
 
-*   **`core`**: Содержит модели данных, интерфейсы репозиториев и бизнес-логику (use cases).
-*   **`infrastructure`**: Реализует репозитории, парсинг ARB-файлов и взаимодействие с файловой системой.
-*   **`application`**: Включает BLoC/Cubit для управления состоянием, внедрение зависимостей (DI) и координацию между `core` и `presentation`.
-*   **`presentation`**: Содержит пользовательский интерфейс Flutter, навигацию и локализацию самого приложения.
+*   **`core`**: Contains data models, repository interfaces, and business logic (use cases).
+*   **`infrastructure`**: Implements repositories, ARB file parsing, and file system interaction.
+*   **`application`**: Includes BLoC/Cubit for state management, dependency injection (DI), and coordination between `core` and `presentation`.
+*   **`presentation`**: Contains the Flutter UI, navigation, and the application's own localization.
 
-## Возможности
+## Features
 
-*   **Управление ARB-файлами**: Загрузка и сохранение локализационных данных из ARB-файлов.
-*   **Добавление новых ключей**: Удобный интерфейс для создания новых локализационных ключей.
-*   **Валидация ключей и значений**: Автоматическая проверка ключей и значений на соответствие правилам формата ARB (например, запрет на символы `@` в ключах, проверка на пустоту).
-*   **Отслеживание добавленных ключей**: Список ключей, добавленных в текущей сессии, для быстрого доступа.
-*   **Обнаружение коллизий**: Подсветка существующих ключей при попытке добавить дубликат.
-*   **Редактирование записей**: Редактирование переводов для различных локалей.
-*   **Настройки**: Выбор директории с ARB-файлами.
+*   **ARB File Management**: Loading and saving localization data from ARB files.
+*   **Adding New Keys**: A convenient interface for creating new localization keys.
+*   **Key and Value Validation**: Automatic validation of keys and values according to ARB format rules (e.g., disallowing `@` symbols in keys, checking for emptiness).
+*   **Tracking Added Keys**: A list of keys added in the current session for quick access.
+*   **Collision Detection**: Highlighting existing keys when attempting to add a duplicate.
+*   **Editing Entries**: Editing translations for various locales.
+*   **Settings**: Selecting the directory containing ARB files.
 
-## Установка и запуск
+## Setup and Running
 
-Для запуска приложения вам потребуется установленный Flutter SDK.
+To run the application, you will need the Flutter SDK installed.
 
-1.  **Клонируйте репозиторий:**
+1.  **Clone the repository:**
     ```bash
     git clone https://github.com/goodbaes/localization_ui_tool.git
     cd localization_ui_tool
     ```
-2.  **Получите зависимости:**
+2.  **Get dependencies:**
     ```bash
     flutter pub get
     ```
-3.  **Запустите приложение:**
-    *   **Для Windows:**
+3.  **Run the application:**
+    *   **For Windows:**
         ```bash
         flutter run -d windows
         ```
-    *   **Для macOS:**
+    *   **For macOS:**
         ```bash
         flutter run -d macos
         ```
-    *   **Для Linux:**
+    *   **For Linux:**
         ```bash
         flutter run -d linux
         ```
 
-## Сборка исполняемых файлов
+## Building Executables
 
-Для создания исполняемых файлов для различных платформ:
+To create executable files for various platforms:
 
-*   **Для Windows:**
+*   **For Windows:**
     ```bash
     flutter build windows
     ```
-    Исполняемый файл будет находиться по пути `build\windows\x64\runner\Release\localization_ui_tool.exe`. Обратите внимание, что для работы приложения также потребуется папка `data` и `.dll` файлы, расположенные рядом с исполняемым файлом.
+    The executable will be located at `build\windows\x64\runner\Release\localization_ui_tool.exe`. Note that the `data` folder and `.dll` files located next to the executable are also required for the application to run.
 
-*   **Для macOS:**
+*   **For macOS:**
     ```bash
     flutter build macos
     ```
-    Исполняемый файл будет находиться по пути `build/macos/Build/Products/Release/localization_ui_tool.app`.
+    The executable will be located at `build/macos/Build/Products/Release/localization_ui_tool.app`.
 
-*   **Для Linux:**
+*   **For Linux:**
     ```bash
     flutter build linux
     ```
-    Исполняемый файл будет находиться по пути `build/linux/x64/release/bundle/localization_ui_tool`.
+    The executable will be located at `build/linux/x64/release/bundle/localization_ui_tool`.
 
+## Usage
 
-## Использование
+### Setting up the ARB Directory
 
-### Настройка директории ARB
+1.  Click the **gear icon** in the top right corner of the main screen.
+2.  On the settings screen, click the **folder icon** next to "ARB Directory".
+3.  Select the directory containing your ARB files.
 
-1.  Нажмите на иконку **шестеренки** в правом верхнем углу главного экрана.
-2.  На экране настроек нажмите на иконку **папки** рядом с "ARB Directory".
-3.  Выберите директорию, содержащую ваши ARB-файлы.
+### Adding a New Key
 
-### Добавление нового ключа
+1.  On the main screen, enter the desired key in the **"New Key"** field.
+2.  Click the **"Add"** button.
+3.  If the key passes validation rules and does not exist, you will be redirected to the editing screen to enter translations.
+4.  If the key already exists, it will be highlighted in red, and you can click on it to edit it.
+5.  After successful saving on the editing screen, the new key will appear in the **"Keys added in this session"** list.
 
-1.  На главном экране введите желаемый ключ в поле **"New Key"**.
-2.  Нажмите кнопку **"Add"**.
-3.  Если ключ соответствует правилам валидации и не существует, вы будете перенаправлены на экран редактирования для ввода переводов.
-4.  Если ключ уже существует, он будет подсвечен красным, и вы сможете перейти к его редактированию.
-5.  После успешного сохранения на экране редактирования, новый ключ появится в списке **"Keys added in this session"**.
+### Editing an Existing Key
 
-### Редактирование существующего ключа
+*   **From the "Keys added in this session" list**: Click on a key in this list to go to its editing screen.
+*   **Via the "New Key" field**: Enter an existing key in the "New Key" field and click "Add". If the key is found, it will be highlighted, and you can click on it to edit it.
 
-*   **Из списка "Keys added in this session"**: Нажмите на ключ в этом списке, чтобы перейти к его редактированию.
-*   **Через поле "New Key"**: Введите существующий ключ в поле "New Key" и нажмите "Add". Если ключ найден, он будет подсвечен, и вы сможете нажать на него для редактирования.
+### Validation
 
-### Валидация
-
-При вводе ключей и значений приложение выполняет валидацию на соответствие формату ARB. В случае ошибок будут показаны соответствующие сообщения.
+When entering keys and values, the application performs validation against the ARB format. In case of errors, appropriate messages will be displayed.
