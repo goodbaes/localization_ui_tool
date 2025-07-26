@@ -1,0 +1,15 @@
+{
+  "@@locale": "en",
+  "appTitle": "Localization UI Tool",
+  "search": "Search",
+  "errorLoadingEntries": "Error loading entries",
+  "editEntry": "Edit {entryKey}",
+  "saving": "Saving...",
+  "missingTranslations": "Missing Translations",
+  "noMissingTranslations": "No missing translations found.",
+  "addEntry": "Add New Entry",
+  "key": "Key",
+  "translation": "Translation",
+  "keyCannotBeEmpty": "Key cannot be empty",
+  "qwe": "rrr"
+}

@@ -1,0 +1,15 @@
+{
+  "@@locale": "es",
+  "appTitle": "Herramienta de UI de",
+  "search": "Buscara",
+  "errorLoadingEntries": "Error al cargar entradas",
+  "editEntry": "Editar {entryKey}",
+  "saving": "Guardando...",
+  "missingTranslations": "Traducciones faltantes",
+  "noMissingTranslations": "No se encontraron traducciones faltantes.",
+  "addEntry": "Añadir nueva entrada",
+  "key": "Clave",
+  "translation": "Traducción",
+  "keyCannotBeEmpty": "La clave no puede estar vacía",
+  "qwe": "rrr"
+}
