@@ -106,6 +106,8 @@ class _EntryEditPageState extends State<EntryEditPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
+
       appBar: AppBar(
         title: Text(
           widget.entryKey.isEmpty ? context.l10n.addEntry : context.l10n.editEntry(widget.entryKey),
@@ -117,62 +119,67 @@ class _EntryEditPageState extends State<EntryEditPage> {
           ),
         ],
       ),
-      body: BlocListener<LocalizationCubit, LocalizationState>(
-        listener: (context, state) {
-          // Dismiss any existing snackbar before showing a new one or handling state
-          if (_currentSnackBar != null) {
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            _currentSnackBar = null;
-          }
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: BlocListener<LocalizationCubit, LocalizationState>(
+          listener: (context, state) {
+            // Dismiss any existing snackbar before showing a new one or handling state
+            if (_currentSnackBar != null) {
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              _currentSnackBar = null;
+            }
 
-          if (state is LocalizationSaving) {
-            _currentSnackBar = SnackBar(content: Text(context.l10n.saving));
-            ScaffoldMessenger.of(context).showSnackBar(_currentSnackBar!);
-          } else if (state is LocalizationLoaded) {
-            // Dismiss the saving snackbar
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            _currentSnackBar = null;
+            if (state is LocalizationSaving) {
+              _currentSnackBar = SnackBar(content: Text(context.l10n.saving));
+              ScaffoldMessenger.of(context).showSnackBar(_currentSnackBar!);
+            } else if (state is LocalizationLoaded) {
+              // Dismiss the saving snackbar
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              _currentSnackBar = null;
 
-            // Pop after successful save, but defer to next frame
-            WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pop(SessionKey(key: _savedKey!, status: widget.initialStatus));
-            });
-          } else if (state is LocalizationError) {
-            // Dismiss the saving snackbar
-            ScaffoldMessenger.of(context).hideCurrentSnackBar();
-            _currentSnackBar = null;
+              // Pop after successful save, but defer to next frame
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                Navigator.of(
+                  context,
+                ).pop(SessionKey(key: _savedKey!, status: widget.initialStatus));
+              });
+            } else if (state is LocalizationError) {
+              // Dismiss the saving snackbar
+              ScaffoldMessenger.of(context).hideCurrentSnackBar();
+              _currentSnackBar = null;
 
-            ErrorDialog.show(context, state.message);
-          }
-        },
-        child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: [
-            if (widget.entryKey.isEmpty) // Show key input only for new entries
-              Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: TextField(
-                  controller: _keyController,
-                  decoration: InputDecoration(
-                    labelText: context.l10n.key,
-                    border: const OutlineInputBorder(),
+              ErrorDialog.show(context, state.message);
+            }
+          },
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: [
+              if (widget.entryKey.isEmpty) // Show key input only for new entries
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextField(
+                    controller: _keyController,
+                    decoration: InputDecoration(
+                      labelText: context.l10n.key,
+                      border: const OutlineInputBorder(),
+                    ),
                   ),
                 ),
-              ),
-            const SizedBox(height: 16),
-            ..._supportedLocales.map((locale) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: TextField(
-                  controller: _controllers[locale],
-                  decoration: InputDecoration(
-                    labelText: '${locale.toUpperCase()} ${context.l10n.translation}',
-                    border: const OutlineInputBorder(),
+              const SizedBox(height: 16),
+              ..._supportedLocales.map((locale) {
+                return Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: TextField(
+                    controller: _controllers[locale],
+                    decoration: InputDecoration(
+                      labelText: '${locale.toUpperCase()} ${context.l10n.translation}',
+                      border: const OutlineInputBorder(),
+                    ),
                   ),
-                ),
-              );
-            }),
-          ],
+                );
+              }),
+            ],
+          ),
         ),
       ),
     );

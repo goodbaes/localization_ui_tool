@@ -291,6 +291,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'www'**
   String get www;
+
+  /// No description provided for @qwerty.
+  ///
+  /// In en, this message translates to:
+  /// **'qwe'**
+  String get qwerty;
 }
 
 class _AppLocalizationsDelegate

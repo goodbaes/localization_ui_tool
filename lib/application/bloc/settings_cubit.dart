@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/save_settings_use_case.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 abstract class SettingsState {}
 
@@ -37,6 +38,13 @@ class SettingsCubit extends Cubit<SettingsState> {
   Future<void> updateThemeMode(ThemeMode themeMode) async {
     final currentSettings = (state as SettingsLoaded).settings;
     final updatedSettings = currentSettings.copyWith(themeMode: themeMode);
+    await saveSettings(updatedSettings);
+    emit(SettingsLoaded(updatedSettings));
+  }
+
+  Future<void> updateFlexScheme(FlexScheme flexScheme) async {
+    final currentSettings = (state as SettingsLoaded).settings;
+    final updatedSettings = currentSettings.copyWith(flexScheme: flexScheme);
     await saveSettings(updatedSettings);
     emit(SettingsLoaded(updatedSettings));
   }

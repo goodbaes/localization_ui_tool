@@ -1,3 +1,4 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -40,7 +41,6 @@ class MyApp extends StatelessWidget {
             currentLocale = state.settings.locale;
           }
           return MaterialApp.router(
-            title: AppLocalizations.of(context)?.appTitle,
             routerConfig: router,
             locale: currentLocale, // Use the locale from settings
             localizationsDelegates: const [
@@ -49,10 +49,15 @@ class MyApp extends StatelessWidget {
               GlobalWidgetsLocalizations.delegate,
               GlobalCupertinoLocalizations.delegate,
             ],
+
             supportedLocales: AppLocalizations.supportedLocales,
-            theme: ThemeData.light(),
-            darkTheme: ThemeData.dark(),
-            themeMode: state is SettingsLoaded ? state.settings.themeMode : ThemeMode.system,
+            theme: FlexThemeData.light(
+              scheme: (state is SettingsLoaded ? state.settings.flexScheme : FlexScheme.material),
+            ),
+            darkTheme: FlexThemeData.dark(
+              scheme: (state is SettingsLoaded ? state.settings.flexScheme : FlexScheme.material),
+            ),
+            themeMode: (state is SettingsLoaded ? state.settings.themeMode : ThemeMode.system),
           );
         },
       ),

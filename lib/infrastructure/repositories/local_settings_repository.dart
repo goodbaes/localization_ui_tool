@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:localization_ui_tool/core/repositories/settings_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 
 class LocalSettingsRepository implements SettingsRepository {
   LocalSettingsRepository(this.prefs);
@@ -30,4 +31,17 @@ class LocalSettingsRepository implements SettingsRepository {
 
   @override
   Future<void> setThemeMode(ThemeMode themeMode) => prefs.setInt('themeMode', themeMode.index);
+
+  @override
+  Future<FlexScheme?> get flexScheme async {
+    final schemeName = prefs.getString('flexScheme');
+    if (schemeName == null) return null;
+    return FlexScheme.values.firstWhere(
+      (e) => e.toString() == 'FlexScheme.' + schemeName,
+      orElse: () => FlexScheme.material,
+    );
+  }
+
+  @override
+  Future<void> setFlexScheme(FlexScheme flexScheme) => prefs.setString('flexScheme', flexScheme.name);
 }

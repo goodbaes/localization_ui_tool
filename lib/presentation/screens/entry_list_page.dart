@@ -30,6 +30,7 @@ class _EntryListPageState extends State<EntryListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         title: Text(context.l10n.appTitle),
         actions: [
@@ -42,95 +43,102 @@ class _EntryListPageState extends State<EntryListPage> {
           ),
         ],
       ),
-      body: BlocBuilder<LocalizationCubit, LocalizationState>(
-        builder: (context, state) {
-          if (state is LocalizationInitial) {
-            context.read<LocalizationCubit>().loadEntries();
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is LocalizationLoading) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (state is LocalizationLoaded) {
-            return Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _newKeyController,
-                          decoration: InputDecoration(
-                            labelText: context.l10n.newKey,
-                            border: const OutlineInputBorder(),
-                            suffixIcon: IconButton(
-                              icon: const Icon(Icons.clear),
-                              onPressed: () {
-                                _newKeyController.clear();
-                                setState(() {
-                                  _collidedKey = null;
-                                });
-                              },
-                            ),
-                          ),
-                          onSubmitted: (value) => _handleAddKey(),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      ElevatedButton(
-                        onPressed: _handleAddKey,
-                        child: Text(context.l10n.add),
-                      ),
-                    ],
-                  ),
-                ),
-                if (_collidedKey != null)
-                  ListTile(
-                    title: Text(
-                      '${String.fromCharCode(0x21AA)} ${context.l10n.keyExists}: $_collidedKey',
-                      style: const TextStyle(color: Colors.red),
-                    ),
-                    onTap: () =>
-                        context.push('/edit/$_collidedKey', extra: SessionKeyStatus.modifiedKey),
-                  ),
-                if (_sessionAddedKeys.isNotEmpty)
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+      body: Padding(
+        padding: const EdgeInsets.all(8),
+        child: BlocBuilder<LocalizationCubit, LocalizationState>(
+          builder: (context, state) {
+            if (state is LocalizationInitial) {
+              context.read<LocalizationCubit>().loadEntries();
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is LocalizationLoading) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (state is LocalizationLoaded) {
+              return Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Row(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8),
-                          child: Text(
-                            context.l10n.sessionAddedKeys,
-                            style: Theme.of(context).textTheme.titleMedium,
-                          ),
-                        ),
                         Expanded(
-                          child: ListView.builder(
-                            itemCount: _sessionAddedKeys.length,
-                            itemBuilder: (context, index) {
-                              final sessionKey = _sessionAddedKeys[index];
-                              return ListTile(
-                                leading: Text(String.fromCharCode(2714)),
-                                title: Text(sessionKey.key),
-                                onTap: () => context.push(
-                                  '/edit/${sessionKey.key}',
-                                  extra: sessionKey.status,
-                                ),
-                              );
-                            },
+                          child: TextField(
+                            controller: _newKeyController,
+                            decoration: InputDecoration(
+                              labelText: context.l10n.newKey,
+                              border: const OutlineInputBorder(),
+                              suffixIcon: IconButton(
+                                icon: const Icon(Icons.clear),
+                                onPressed: () {
+                                  _newKeyController.clear();
+                                  setState(() {
+                                    _collidedKey = null;
+                                  });
+                                },
+                              ),
+                            ),
+                            onSubmitted: (value) => _handleAddKey(),
                           ),
                         ),
-                        const Divider(),
+                        const SizedBox(width: 8),
+                        ElevatedButton(
+                          onPressed: _handleAddKey,
+                          child: SizedBox(
+                            height: 50,
+                            width: 100,
+                            child: Center(child: Text(context.l10n.add)),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-              ],
-            );
-          } else if (state is LocalizationSaving) {
-            return const Center(child: CircularProgressIndicator());
-          }
-          return Center(child: Text(context.l10n.errorLoadingEntries));
-        },
+                  if (_collidedKey != null)
+                    ListTile(
+                      title: Text(
+                        '${String.fromCharCode(0x21AA)} ${context.l10n.keyExists}: $_collidedKey',
+                        style: const TextStyle(color: Colors.red),
+                      ),
+                      onTap: () =>
+                          context.push('/edit/$_collidedKey', extra: SessionKeyStatus.modifiedKey),
+                    ),
+                  if (_sessionAddedKeys.isNotEmpty)
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8),
+                            child: Text(
+                              context.l10n.sessionAddedKeys,
+                              style: Theme.of(context).textTheme.titleMedium,
+                            ),
+                          ),
+                          Expanded(
+                            child: ListView.builder(
+                              itemCount: _sessionAddedKeys.length,
+                              itemBuilder: (context, index) {
+                                final sessionKey = _sessionAddedKeys[index];
+                                return ListTile(
+                                  leading: Text(String.fromCharCode(0x2714)),
+                                  title: Text(sessionKey.key),
+                                  onTap: () => context.push(
+                                    '/edit/${sessionKey.key}',
+                                    extra: sessionKey.status,
+                                  ),
+                                );
+                              },
+                            ),
+                          ),
+                          const Divider(),
+                        ],
+                      ),
+                    ),
+                ],
+              );
+            } else if (state is LocalizationSaving) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            return Center(child: Text(context.l10n.errorLoadingEntries));
+          },
+        ),
       ),
     );
   }

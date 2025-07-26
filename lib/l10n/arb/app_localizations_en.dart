@@ -106,4 +106,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get www => 'www';
+
+  @override
+  String get qwerty => 'qwe';
 }

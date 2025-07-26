@@ -14,5 +14,8 @@ class SaveSettingsUseCase {
     if (settings.themeMode != null) {
       await repo.setThemeMode(settings.themeMode!);
     }
+    if (settings.flexScheme != null) {
+      await repo.setFlexScheme(settings.flexScheme!);
+    }
   }
 }
