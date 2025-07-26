@@ -221,7 +221,7 @@ abstract class AppLocalizations {
   /// No description provided for @r.
   ///
   /// In en, this message translates to:
-  /// **'r'**
+  /// **'qweqweasdfa Sas ADSF Asdf asdf sadvc 123 1341\$#!\$!@# 123 123'**
   String get r;
 
   /// No description provided for @tt.

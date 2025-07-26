@@ -71,7 +71,8 @@ class AppLocalizationsEn extends AppLocalizations {
   String get start => 'start';
 
   @override
-  String get r => 'r';
+  String get r =>
+      'qweqweasdfa Sas ADSF Asdf asdf sadvc 123 1341\$#!\$!@# 123 123';
 
   @override
   String get tt => 'tt';

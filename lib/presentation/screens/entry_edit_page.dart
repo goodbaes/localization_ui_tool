@@ -128,7 +128,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
 
             // Pop after successful save, but defer to next frame
             WidgetsBinding.instance.addPostFrameCallback((_) {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(widget.entryKey.isEmpty); // Return true if it was a new entry
             });
           } else if (state is LocalizationError) {
             // Dismiss the saving snackbar

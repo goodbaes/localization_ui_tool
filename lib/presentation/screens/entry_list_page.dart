@@ -60,12 +60,21 @@ class _EntryListPageState extends State<EntryListPage> {
                           decoration: InputDecoration(
                             labelText: context.l10n.newKey,
                             border: const OutlineInputBorder(),
+                            suffixIcon: IconButton(
+                              icon: const Icon(Icons.clear),
+                              onPressed: () {
+                                _newKeyController.clear();
+                                setState(() {
+                                  _collidedKey = null;
+                                });
+                              },
+                            ),
                           ),
                         ),
                       ),
                       const SizedBox(width: 8),
                       ElevatedButton(
-                        onPressed: () {
+                        onPressed: () async {
                           final newKey = _newKeyController.text.trim();
                           final validationError = ArbValidator.validateKey(newKey);
                           if (validationError != null) {
@@ -86,9 +95,13 @@ class _EntryListPageState extends State<EntryListPage> {
                               });
                             } else {
                               // Key does not exist, navigate to add new entry
-                              context.push('/edit/$newKey');
+                              final result = await context.push('/edit/$newKey');
+                              if (result == true) {
+                                setState(() {
+                                  _sessionAddedKeys.add(newKey);
+                                });
+                              }
                               setState(() {
-                                _sessionAddedKeys.add(newKey);
                                 _collidedKey = null; // Clear collision highlight
                                 _newKeyController.clear();
                               });
