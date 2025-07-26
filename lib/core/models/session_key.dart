@@ -1,13 +1,21 @@
-enum SessionKeyStatus {
-  newKey,
-  modifiedKey,
-}
+import 'dart:core';
+
+enum SessionKeyStatus { newKey, modifiedKey }
 
 class SessionKey {
+  SessionKey({required this.key, required this.status});
+
+  factory SessionKey.fromJson(Map<String, dynamic> json) {
+    return SessionKey(
+      key: json['key'] as String,
+      status: SessionKeyStatus.values.firstWhere(
+        (e) => e.name == json['status'],
+        orElse: () => SessionKeyStatus.newKey,
+      ),
+    );
+  }
   final String key;
   final SessionKeyStatus status;
-
-  SessionKey({required this.key, required this.status});
 
   @override
   bool operator ==(Object other) =>
@@ -16,4 +24,11 @@ class SessionKey {
 
   @override
   int get hashCode => key.hashCode;
+
+  Map<String, dynamic> toJson() {
+    return {
+      'key': key,
+      'status': status.name,
+    };
+  }
 }

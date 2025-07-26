@@ -30,10 +30,9 @@ class _SettingsPageState extends State<SettingsPage> {
 
   Future<void> _loadSupportedLocales() async {
     try {
-      final getSupportedLocales = GetIt.instance<GetSupportedLocalesUseCase>();
-      final locales = await getSupportedLocales();
+      const getSupportedLocales = AppLocalizations.supportedLocales;
       setState(() {
-        _supportedLocales = locales;
+        _supportedLocales = getSupportedLocales;
         _isLoadingLocales = false;
       });
     } catch (e) {
@@ -79,9 +78,11 @@ class _SettingsPageState extends State<SettingsPage> {
                           final selectedDirectory = await FilePicker.platform.getDirectoryPath();
                           if (selectedDirectory != null) {
                             final normalizedPath = p.normalize(p.absolute(selectedDirectory));
-                            final hasArb = await context.read<SettingsCubit>().checkArbDirectory(normalizedPath);
+                            final hasArb = await context.read<SettingsCubit>().checkArbDirectory(
+                              normalizedPath,
+                            );
                             if (!hasArb) {
-                              ErrorDialog.show(context, context.l10n.noArbFilesFound, error: null);
+                              ErrorDialog.show(context, context.l10n.noArbFilesFound);
                               return;
                             }
                             context.read<SettingsCubit>().update(
