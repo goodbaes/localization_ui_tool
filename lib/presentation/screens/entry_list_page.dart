@@ -4,11 +4,10 @@ import 'package:go_router/go_router.dart';
 import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
+import 'package:localization_ui_tool/core/models/session_key.dart';
 import 'package:localization_ui_tool/core/utils/arb_validator.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
-
-import 'package:localization_ui_tool/core/models/session_key.dart';
 
 class EntryListPage extends StatefulWidget {
   const EntryListPage({super.key});
@@ -67,7 +66,6 @@ class _EntryListPageState extends State<EntryListPage> {
             child: BlocBuilder<LocalizationCubit, LocalizationState>(
               builder: (context, state) {
                 if (state is LocalizationInitial) {
-                  context.read<LocalizationCubit>().loadEntries();
                   return const Center(child: CircularProgressIndicator());
                 } else if (state is LocalizationLoading) {
                   return const Center(child: CircularProgressIndicator());
@@ -157,7 +155,18 @@ class _EntryListPageState extends State<EntryListPage> {
                 } else if (state is LocalizationSaving) {
                   return const Center(child: CircularProgressIndicator());
                 }
-                return Center(child: Text(context.l10n.errorLoadingEntries));
+                return Center(
+                  child: Column(
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => context.read<SettingsCubit>().selectDirectory(),
+
+                        child: const Text('Open folder'),
+                      ),
+                      Text(context.l10n.errorLoadingEntries),
+                    ],
+                  ),
+                );
               },
             ),
           ),
@@ -170,7 +179,7 @@ class _EntryListPageState extends State<EntryListPage> {
     final newKey = _newKeyController.text.trim();
     final validationError = ArbValidator.validateKey(context, newKey);
     if (validationError != null) {
-      ErrorDialog.show(context, validationError, error: null);
+      ErrorDialog.show(context, validationError);
       return;
     }
     if (newKey.isNotEmpty) {

@@ -1,10 +1,12 @@
+import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:localization_ui_tool/core/errors/no_arb_files_found_exception.dart';
 import 'package:localization_ui_tool/core/services/directory_service.dart';
 import 'package:localization_ui_tool/core/use_cases/check_arb_directory_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/save_settings_use_case.dart';
-import 'package:flex_color_scheme/flex_color_scheme.dart';
+import 'package:localization_ui_tool/core/use_cases/select_directory_use_case.dart';
 
 abstract class SettingsState {}
 
@@ -15,20 +17,45 @@ class SettingsLoaded extends SettingsState {
   final Settings settings;
 }
 
+class SettingsError extends SettingsState {
+  SettingsError(this.message);
+  final String message;
+}
+
 class SettingsCubit extends Cubit<SettingsState> {
   SettingsCubit({
     required this.getSettings,
     required this.saveSettings,
     required this.directoryService,
     required this.checkArbDirectoryUseCase,
-  }) : super(SettingsInitial());
+    required this.selectDirectoryUseCase,
+  }) : super(SettingsInitial()) {
+    directoryService.directoryPathStream.listen((path) {
+      if (path != null && path.isNotEmpty) {
+        load();
+      } else {
+        emit(SettingsError('Directory path is empty'));
+        emit(SettingsInitial());
+      }
+    });
+  }
   final GetSettingsUseCase getSettings;
   final SaveSettingsUseCase saveSettings;
   final DirectoryService directoryService;
   final CheckArbDirectoryUseCase checkArbDirectoryUseCase;
+  final SelectDirectoryUseCase selectDirectoryUseCase;
 
   Future<bool> checkArbDirectory(String path) async {
     return checkArbDirectoryUseCase(path);
+  }
+
+  Future<void> selectDirectory() async {
+    try {
+      await selectDirectoryUseCase();
+    } on NoArbFilesFoundException catch (e) {
+      emit(SettingsError(e.message));
+      emit(SettingsInitial());
+    }
   }
 
   Future<void> load() async {

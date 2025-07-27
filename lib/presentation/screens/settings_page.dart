@@ -1,15 +1,10 @@
-import 'package:file_picker/file_picker.dart';
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
-import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
-import 'package:localization_ui_tool/core/use_cases/get_supported_locales_use_case.dart';
 import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
-import 'package:path/path.dart' as p;
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -57,7 +52,9 @@ class _SettingsPageState extends State<SettingsPage> {
         padding: const EdgeInsets.all(8),
         child: BlocConsumer<SettingsCubit, SettingsState>(
           listener: (context, state) {
-            // No longer showing a toast for settings saved.
+            if (state is SettingsError) {
+              ErrorDialog.show(context, state.message);
+            }
           },
           builder: (context, state) {
             if (state is SettingsInitial) {
@@ -75,25 +72,7 @@ class _SettingsPageState extends State<SettingsPage> {
                       trailing: IconButton(
                         icon: const Icon(Icons.folder_open),
                         onPressed: () async {
-                          final selectedDirectory = await FilePicker.platform.getDirectoryPath();
-                          if (selectedDirectory != null) {
-                            final normalizedPath = p.normalize(p.absolute(selectedDirectory));
-                            final hasArb = await context.read<SettingsCubit>().checkArbDirectory(
-                              normalizedPath,
-                            );
-                            if (!hasArb) {
-                              ErrorDialog.show(context, context.l10n.noArbFilesFound);
-                              return;
-                            }
-                            context.read<SettingsCubit>().update(
-                              Settings(
-                                directoryPath: normalizedPath,
-                                locale: state.settings.locale,
-                                themeMode: state.settings.themeMode,
-                                flexScheme: state.settings.flexScheme,
-                              ),
-                            );
-                          }
+                          await context.read<SettingsCubit>().selectDirectory();
                         },
                       ),
                     ),

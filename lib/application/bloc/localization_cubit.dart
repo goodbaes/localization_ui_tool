@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
-import 'package:localization_ui_tool/core/services/directory_service.dart';
+import 'package:localization_ui_tool/core/services/localization_service.dart';
 import 'package:localization_ui_tool/core/use_cases/get_all_entries_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/save_entry_use_case.dart';
 
@@ -24,17 +24,32 @@ class LocalizationError extends LocalizationState {
 }
 
 class LocalizationCubit extends Cubit<LocalizationState> {
-  LocalizationCubit({required this.getAll, required this.saveEntry, required this.directoryService})
-    : super(LocalizationInitial());
+  LocalizationCubit({
+    required this.getAll,
+    required this.saveEntry,
+    required this.localizationService,
+  }) : super(LocalizationInitial()) {
+    loadEntries();
+    localizationService.entriesStream.listen((entries) {
+      if (entries.isEmpty) {
+        if (state is LocalizationError) {
+          return;
+        }
+        emit(LocalizationError('No entries found.'));
+        return;
+      }
+      emit(LocalizationLoaded(entries));
+    });
+  }
+
+  final LocalizationService localizationService;
   final GetAllEntriesUseCase getAll;
   final SaveEntryUseCase saveEntry;
-  final DirectoryService directoryService;
 
   Future<void> loadEntries() async {
     try {
       emit(LocalizationLoading());
-      final list = await getAll();
-      emit(LocalizationLoaded(list));
+      await getAll();
     } catch (e) {
       emit(LocalizationError('Failed to load entries: $e'));
     }

@@ -2,14 +2,11 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:get_it/get_it.dart';
 import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/application/di.dart';
 import 'package:localization_ui_tool/application/navigation/router.dart';
-import 'package:localization_ui_tool/core/use_cases/get_supported_locales_use_case.dart';
 import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
-import 'package:localization_ui_tool/l10n/l10n.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,7 +65,7 @@ class _MyAppState extends State<MyApp> {
           create: (context) => LocalizationCubit(
             getAll: getIt(),
             saveEntry: getIt(),
-            directoryService: getIt(),
+            localizationService: getIt(),
           ),
         ),
         BlocProvider<SettingsCubit>(
@@ -77,10 +74,12 @@ class _MyAppState extends State<MyApp> {
             saveSettings: getIt(),
             directoryService: getIt(),
             checkArbDirectoryUseCase: getIt(),
+            selectDirectoryUseCase: getIt(),
           )..load(), // Load settings when the app starts
         ),
       ],
-      child: BlocConsumer<SettingsCubit, SettingsState>( // Changed to BlocConsumer
+      child: BlocConsumer<SettingsCubit, SettingsState>(
+        // Changed to BlocConsumer
         listener: (context, state) {
           if (state is SettingsLoaded) {
             // Once settings are loaded, load localization entries

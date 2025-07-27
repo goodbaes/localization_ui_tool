@@ -17,7 +17,7 @@ class ErrorDialog {
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
-                context.push('/macos_permission_error');
+                context.push('/settings');
               },
               child: Text(context.l10n.macOSPermissionErrorButton),
             ),
