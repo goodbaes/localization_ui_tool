@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/core/repositories/localization_repository.dart';
 import 'package:localization_ui_tool/core/repositories/settings_repository.dart';
+import 'package:localization_ui_tool/core/utils/directory_access_validator.dart';
 import 'package:localization_ui_tool/infrastructure/models/arb_parser.dart';
 
 class ArbFileRepository implements LocalizationRepository {
@@ -20,6 +21,11 @@ class ArbFileRepository implements LocalizationRepository {
   Future<List<LocalizationEntry>> loadAll() async {
     final directoryPath = await settingsRepository.directoryPath;
     if (directoryPath == null || directoryPath.isEmpty) {
+      return [];
+    }
+
+    if (!await DirectoryAccessValidator.isAccessible(directoryPath)) {
+      debugPrint('Directory is not accessible: $directoryPath');
       return [];
     }
     return compute(_parseAllFiles, {'path': directoryPath});
