@@ -1,5 +1,3 @@
-import 'dart:async';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/core/services/directory_service.dart';
@@ -27,21 +25,10 @@ class LocalizationError extends LocalizationState {
 
 class LocalizationCubit extends Cubit<LocalizationState> {
   LocalizationCubit({required this.getAll, required this.saveEntry, required this.directoryService})
-    : super(LocalizationInitial()) {
-    _directorySubscription = directoryService.directoryPathStream.listen((path) {
-      loadEntries();
-    });
-  }
+    : super(LocalizationInitial());
   final GetAllEntriesUseCase getAll;
   final SaveEntryUseCase saveEntry;
   final DirectoryService directoryService;
-  late StreamSubscription<String?> _directorySubscription;
-
-  @override
-  Future<void> close() {
-    _directorySubscription.cancel();
-    return super.close();
-  }
 
   Future<void> loadEntries() async {
     try {

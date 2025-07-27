@@ -80,7 +80,13 @@ class _MyAppState extends State<MyApp> {
           )..load(), // Load settings when the app starts
         ),
       ],
-      child: BlocBuilder<SettingsCubit, SettingsState>(
+      child: BlocConsumer<SettingsCubit, SettingsState>( // Changed to BlocConsumer
+        listener: (context, state) {
+          if (state is SettingsLoaded) {
+            // Once settings are loaded, load localization entries
+            context.read<LocalizationCubit>().loadEntries();
+          }
+        },
         builder: (context, state) {
           Locale? currentLocale;
           if (state is SettingsLoaded) {
