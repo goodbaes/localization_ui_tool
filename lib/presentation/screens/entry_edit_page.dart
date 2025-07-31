@@ -21,73 +21,97 @@ class EntryEditPage extends StatefulWidget {
 
 class _EntryEditPageState extends State<EntryEditPage> {
   final Map<String, TextEditingController> _controllers = {};
-  late TextEditingController _keyController; // Controller for the key input
-  LocalizationEntry? _currentEntry;
-  SnackBar? _currentSnackBar; // To keep track of the displayed SnackBar
+  late TextEditingController _keyController;
+  bool _showLocalizationFields = false;
+  List<Locale> _supportedLocales = [];
+  bool _isLoading = false;
   String? _savedKey;
-  List<Locale> _supportedLocales = []; // Dynamically loaded locales
-  bool _isLoadingLocales = true;
 
   @override
   void initState() {
     super.initState();
     _keyController = TextEditingController(text: widget.entryKey);
-    _loadSupportedLocalesAndEntry();
-  }
-
-  Future<void> _loadSupportedLocalesAndEntry() async {
-    try {
-      final getSupportedLocales = GetIt.instance<GetSupportedLocalesUseCase>();
-      final locales = await getSupportedLocales();
-      setState(() {
-        _supportedLocales = locales;
-        _isLoadingLocales = false;
-      });
-
-      // If it's a new entry, initialize with empty values for all supported locales
-      if (widget.entryKey.isEmpty) {
-        _currentEntry = const LocalizationEntry(key: '', values: {});
-        for (final locale in _supportedLocales) {
-          _controllers[locale.languageCode] = TextEditingController();
-        }
-      } else {
-        // For existing entries, load data from cubit
-        final state = context.read<LocalizationCubit>().state;
-        if (state is LocalizationLoaded) {
-          _currentEntry = state.entries.firstWhere(
-            (entry) => entry.key == widget.entryKey,
-            orElse: () => LocalizationEntry(key: widget.entryKey, values: {}),
-          );
-          _keyController.text = _currentEntry!.key; // Set key controller text
-
-          // Populate controllers for existing values and create for missing ones
-          for (final locale in _supportedLocales) {
-            _controllers[locale.languageCode] = TextEditingController(text: _currentEntry!.values[locale.languageCode] ?? '');
-          }
-        }
-      }
-    } catch (e) {
-      setState(() {
-        _isLoadingLocales = false;
-      });
-      ErrorDialog.show(context, 'Failed to load locales: $e', error: e);
+    if (widget.entryKey.isNotEmpty) {
+      _loadInitialData();
     }
   }
 
   @override
   void dispose() {
     _keyController.dispose();
-    _controllers.forEach((key, controller) => controller.dispose());
-    _currentSnackBar = null; // Clear snackbar reference
+    _controllers.forEach((_, controller) => controller.dispose());
     super.dispose();
   }
 
+  Future<void> _loadInitialData() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    try {
+      final getSupportedLocales = GetIt.instance<GetSupportedLocalesUseCase>();
+      final locales = await getSupportedLocales();
+      _supportedLocales = locales;
+
+      final state = context.read<LocalizationCubit>().state;
+      if (state is LocalizationLoaded) {
+        final existingEntry = state.entries.firstWhere(
+          (entry) => entry.key == widget.entryKey,
+          orElse: () => LocalizationEntry(key: widget.entryKey, values: {}),
+        );
+
+        for (final locale in _supportedLocales) {
+          _controllers[locale.languageCode] = TextEditingController(text: existingEntry.values[locale.languageCode] ?? '');
+        }
+      }
+
+      setState(() {
+        _showLocalizationFields = true;
+      });
+    } catch (e) {
+      ErrorDialog.show(context, 'Failed to load data: $e', error: e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _checkKeyAndLoadLocales() async {
+    final key = _keyController.text.trim();
+    if (key.isEmpty) {
+      ErrorDialog.show(context, 'Key cannot be empty', error: null);
+      return;
+    }
+
+    setState(() {
+      _isLoading = true;
+      _showLocalizationFields = false;
+    });
+
+    try {
+      final getSupportedLocales = GetIt.instance<GetSupportedLocalesUseCase>();
+      final locales = await getSupportedLocales();
+      _supportedLocales = locales;
+
+      for (final locale in _supportedLocales) {
+        _controllers[locale.languageCode] = TextEditingController();
+      }
+
+      setState(() {
+        _showLocalizationFields = true;
+      });
+    } catch (e) {
+      ErrorDialog.show(context, 'Failed to load locales: $e', error: e);
+    } finally {
+      setState(() {
+        _isLoading = false;
+      });
+    }
+  }
+
   Future<void> _saveEntry() async {
-    if (_currentEntry == null) return;
-
-    final keyToSave = widget.entryKey.isEmpty ? _keyController.text : _currentEntry!.key;
-
-    // Validate key
+    final keyToSave = _keyController.text.trim();
     final keyValidationError = ArbValidator.validateKey(context, keyToSave);
     if (keyValidationError != null) {
       ErrorDialog.show(context, keyValidationError, error: null);
@@ -111,79 +135,64 @@ class _EntryEditPageState extends State<EntryEditPage> {
     );
 
     await context.read<LocalizationCubit>().updateEntry(updatedEntry);
-    _savedKey = updatedEntry.key; // Store the key that was actually saved
-
-    // The navigation logic is now handled in the BlocListener
+    _savedKey = updatedEntry.key;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Theme.of(context).colorScheme.surface,
-
       appBar: AppBar(
-        title: Text(
-          widget.entryKey.isEmpty ? context.l10n.addEntry : context.l10n.editEntry(widget.entryKey),
-        ),
+        title: Text(widget.entryKey.isEmpty ? context.l10n.addEntry : context.l10n.editEntry(widget.entryKey)),
         actions: [
           IconButton(
             icon: const Icon(Icons.save),
-            onPressed: _saveEntry,
+            onPressed: _showLocalizationFields ? _saveEntry : null,
           ),
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(16.0),
         child: BlocListener<LocalizationCubit, LocalizationState>(
           listener: (context, state) {
-            // Dismiss any existing snackbar before showing a new one or handling state
-            if (_currentSnackBar != null) {
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              _currentSnackBar = null;
-            }
-
-            if (state is LocalizationSaving) {
-              _currentSnackBar = SnackBar(content: Text(context.l10n.saving));
-              ScaffoldMessenger.of(context).showSnackBar(_currentSnackBar!);
-            } else if (state is LocalizationLoaded) {
-              // Dismiss the saving snackbar
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              _currentSnackBar = null;
-
-              // Pop after successful save, but defer to next frame
+            if (state is LocalizationLoaded) {
               WidgetsBinding.instance.addPostFrameCallback((_) {
-                Navigator.of(
-                  context,
-                ).pop(SessionKey(key: _savedKey!, status: widget.initialStatus));
+                if (mounted && _savedKey != null) {
+                  Navigator.of(context).pop(SessionKey(key: _savedKey!, status: widget.initialStatus));
+                }
               });
             } else if (state is LocalizationError) {
-              // Dismiss the saving snackbar
-              ScaffoldMessenger.of(context).hideCurrentSnackBar();
-              _currentSnackBar = null;
-
               ErrorDialog.show(context, state.message, error: null);
             }
           },
-          child: _isLoadingLocales
-              ? const Center(child: CircularProgressIndicator())
-              : ListView(
-                  padding: const EdgeInsets.all(16),
-                  children: [
-                    if (widget.entryKey.isEmpty) // Show key input only for new entries
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
-                        child: TextField(
-                          controller: _keyController,
-                          decoration: InputDecoration(
-                            labelText: context.l10n.key,
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                    const SizedBox(height: 16),
-                    ..._supportedLocales.map((locale) {
+          child: Column(
+            children: [
+              TextField(
+                controller: _keyController,
+                decoration: InputDecoration(
+                  labelText: context.l10n.key,
+                  border: const OutlineInputBorder(),
+                ),
+                readOnly: widget.entryKey.isNotEmpty,
+              ),
+              if (widget.entryKey.isEmpty)
+                Padding(
+                  padding: const EdgeInsets.only(top: 16.0),
+                  child: ElevatedButton(
+                    onPressed: _isLoading ? null : _checkKeyAndLoadLocales,
+                    child: Text(_isLoading ? 'Loading...' : 'Load Locales'),
+                  ),
+                ),
+              if (_isLoading)
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
+                  child: CircularProgressIndicator(),
+                ),
+              if (_showLocalizationFields)
+                Expanded(
+                  child: ListView(
+                    children: _supportedLocales.map((locale) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8),
+                        padding: const EdgeInsets.symmetric(vertical: 8.0),
                         child: TextField(
                           controller: _controllers[locale.languageCode],
                           decoration: InputDecoration(
@@ -192,9 +201,11 @@ class _EntryEditPageState extends State<EntryEditPage> {
                           ),
                         ),
                       );
-                    }),
-                  ],
+                    }).toList(),
+                  ),
                 ),
+            ],
+          ),
         ),
       ),
     );
