@@ -1,6 +1,5 @@
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/core/repositories/localization_repository.dart';

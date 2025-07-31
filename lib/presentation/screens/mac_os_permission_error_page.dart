@@ -11,7 +11,7 @@ class MacOSPermissionErrorPage extends StatelessWidget {
         title: Text(context.l10n.macOSPermissionErrorTitle),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -19,42 +19,42 @@ class MacOSPermissionErrorPage extends StatelessWidget {
               context.l10n.macOSPermissionErrorExplanation,
               style: Theme.of(context).textTheme.titleMedium,
             ),
-            const SizedBox(height: 16.0),
+            const SizedBox(height: 16),
             Text(
               context.l10n.macOSPermissionErrorStepOne,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepTwo,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepThree,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepFour,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepFive,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepSix,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepSeven,
               style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 8.0),
+            const SizedBox(height: 8),
             Text(
               context.l10n.macOSPermissionErrorStepEight,
               style: Theme.of(context).textTheme.bodyLarge,

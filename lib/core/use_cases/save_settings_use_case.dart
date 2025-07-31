@@ -8,7 +8,7 @@ class SaveSettingsUseCase {
   final DirectoryService directoryService;
   Future<void> call(Settings settings) async {
     if (settings.directoryPath != null) {
-      await directoryService.setDirectoryPath(settings.directoryPath!);
+      await directoryService.setDirectoryPath(settings.directoryPath);
     } else {
       await directoryService.setDirectoryPath(null);
     }

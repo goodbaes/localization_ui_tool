@@ -1,7 +1,7 @@
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 
 import 'package:file_picker/file_picker.dart';
+import 'package:flutter/foundation.dart';
 import 'package:localization_ui_tool/core/data/datasource/directory_datasource.dart';
 import 'package:localization_ui_tool/core/errors/no_arb_files_found_exception.dart';
 import 'package:path/path.dart' as p;

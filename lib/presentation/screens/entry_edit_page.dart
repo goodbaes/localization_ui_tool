@@ -6,7 +6,6 @@ import 'package:localization_ui_tool/core/models/localization_entry.dart';
 import 'package:localization_ui_tool/core/models/session_key.dart';
 import 'package:localization_ui_tool/core/use_cases/get_supported_locales_use_case.dart';
 import 'package:localization_ui_tool/core/utils/arb_validator.dart';
-import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
 
@@ -80,7 +79,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
   Future<void> _checkKeyAndLoadLocales() async {
     final key = _keyController.text.trim();
     if (key.isEmpty) {
-      ErrorDialog.show(context, 'Key cannot be empty', error: null);
+      ErrorDialog.show(context, 'Key cannot be empty');
       return;
     }
 
@@ -114,7 +113,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
     final keyToSave = _keyController.text.trim();
     final keyValidationError = ArbValidator.validateKey(context, keyToSave);
     if (keyValidationError != null) {
-      ErrorDialog.show(context, keyValidationError, error: null);
+      ErrorDialog.show(context, keyValidationError);
       return;
     }
 
@@ -123,7 +122,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
       final value = _controllers[locale.languageCode]?.text ?? '';
       final valueValidationError = ArbValidator.validateValue(context, value);
       if (valueValidationError != null) {
-        ErrorDialog.show(context, '${locale.languageCode.toUpperCase()}: $valueValidationError', error: null);
+        ErrorDialog.show(context, '${locale.languageCode.toUpperCase()}: $valueValidationError');
         return;
       }
       updatedValues[locale.languageCode] = value;
@@ -151,7 +150,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
         ],
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(16),
         child: BlocListener<LocalizationCubit, LocalizationState>(
           listener: (context, state) {
             if (state is LocalizationLoaded) {
@@ -161,7 +160,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
                 }
               });
             } else if (state is LocalizationError) {
-              ErrorDialog.show(context, state.message, error: null);
+              ErrorDialog.show(context, state.message);
             }
           },
           child: Column(
@@ -176,7 +175,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
               ),
               if (widget.entryKey.isEmpty)
                 Padding(
-                  padding: const EdgeInsets.only(top: 16.0),
+                  padding: const EdgeInsets.only(top: 16),
                   child: ElevatedButton(
                     onPressed: _isLoading ? null : _checkKeyAndLoadLocales,
                     child: Text(_isLoading ? 'Loading...' : 'Load Locales'),
@@ -184,7 +183,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
                 ),
               if (_isLoading)
                 const Padding(
-                  padding: EdgeInsets.all(16.0),
+                  padding: EdgeInsets.all(16),
                   child: CircularProgressIndicator(),
                 ),
               if (_showLocalizationFields)
@@ -192,7 +191,7 @@ class _EntryEditPageState extends State<EntryEditPage> {
                   child: ListView(
                     children: _supportedLocales.map((locale) {
                       return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
+                        padding: const EdgeInsets.symmetric(vertical: 8),
                         child: TextField(
                           controller: _controllers[locale.languageCode],
                           decoration: InputDecoration(

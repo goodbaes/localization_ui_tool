@@ -1,10 +1,9 @@
 import 'package:go_router/go_router.dart';
+import 'package:localization_ui_tool/core/models/session_key.dart';
 import 'package:localization_ui_tool/presentation/screens/entry_edit_page.dart';
 import 'package:localization_ui_tool/presentation/screens/entry_list_page.dart';
 import 'package:localization_ui_tool/presentation/screens/missing_translations_page.dart';
 import 'package:localization_ui_tool/presentation/screens/settings_page.dart';
-
-import 'package:localization_ui_tool/core/models/session_key.dart';
 
 final GoRouter router = GoRouter(
   initialLocation: '/',
