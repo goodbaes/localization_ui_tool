@@ -4,7 +4,7 @@ class SelectDirectoryUseCase {
   SelectDirectoryUseCase(this._directoryService);
   final DirectoryService _directoryService;
 
-  Future<void> call() {
+  Future<String?> call() {
     return _directoryService.selectDirectory();
   }
 }

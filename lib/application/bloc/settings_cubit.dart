@@ -51,7 +51,13 @@ class SettingsCubit extends Cubit<SettingsState> {
 
   Future<void> selectDirectory() async {
     try {
-      await selectDirectoryUseCase();
+      final path = await selectDirectoryUseCase();
+      if (path != null) {
+        final currentSettings = (state as SettingsLoaded).settings;
+        final updatedSettings = currentSettings.copyWith(directoryPath: path);
+        await saveSettings(updatedSettings);
+        emit(SettingsLoaded(updatedSettings));
+      }
     } on NoArbFilesFoundException catch (e) {
       emit(SettingsError(e.message));
       emit(SettingsInitial());

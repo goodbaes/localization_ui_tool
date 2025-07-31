@@ -8,9 +8,16 @@ class LocalSettingsRepository implements SettingsRepository {
   final SharedPreferences prefs;
 
   @override
-  Future<String?> get directoryPath => Future.value(prefs.getString('directoryPath'));
+  Future<String?> get directoryPath {
+    final path = prefs.getString('directoryPath');
+    debugPrint('LocalSettingsRepository: Reading directoryPath: $path');
+    return Future.value(path);
+  }
   @override
-  Future<void> setDirectoryPath(String path) => prefs.setString('directoryPath', path);
+  Future<void> setDirectoryPath(String path) {
+    debugPrint('LocalSettingsRepository: Saving directoryPath: $path');
+    return prefs.setString('directoryPath', path);
+  }
 
   @override
   Future<Locale?> get locale async {
