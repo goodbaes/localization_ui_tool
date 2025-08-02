@@ -1,7 +1,9 @@
 name: localization_ui_tool
-description: ui tool for arb localization.
+description: A Flutter desktop application designed to simplify the management of localization files in ARB (Application Resource Bundle) format.
 version: 1.0.0+1
 publish_to: none
+homepage: https://github.com/goodbaes/localization_ui_tool
+repository: https://github.com/goodbaes/localization_ui_tool
 
 environment:
   sdk: ^3.8.0

@@ -1,17 +1,13 @@
 import 'package:localization_ui_tool/core/repositories/settings_repository.dart';
 import 'package:localization_ui_tool/core/services/directory_service.dart';
-import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
+import 'package:localization_ui_tool/core/models/settings.dart';
 
 class SaveSettingsUseCase {
   SaveSettingsUseCase(this.repo, this.directoryService);
   final SettingsRepository repo;
   final DirectoryService directoryService;
   Future<void> call(Settings settings) async {
-    if (settings.directoryPath != null) {
-      await directoryService.setDirectoryPath(settings.directoryPath);
-    } else {
-      await directoryService.setDirectoryPath(null);
-    }
+    await directoryService.setDirectoryPath(settings.directoryPath);
     if (settings.locale != null) {
       await repo.setLocale(settings.locale!);
     }

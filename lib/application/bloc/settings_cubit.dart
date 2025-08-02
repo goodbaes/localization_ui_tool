@@ -2,6 +2,8 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/core/errors/no_arb_files_found_exception.dart';
+import 'package:localization_ui_tool/core/models/app_theme.dart';
+import 'package:localization_ui_tool/core/models/settings.dart';
 import 'package:localization_ui_tool/core/services/directory_service.dart';
 import 'package:localization_ui_tool/core/use_cases/check_arb_directory_use_case.dart';
 import 'package:localization_ui_tool/core/use_cases/get_settings_use_case.dart';
@@ -74,14 +76,14 @@ class SettingsCubit extends Cubit<SettingsState> {
     emit(SettingsLoaded(settings));
   }
 
-  Future<void> updateLocale(Locale locale) async {
+  Future<void> updateLocale(String locale) async {
     final currentSettings = (state as SettingsLoaded).settings;
     final updatedSettings = currentSettings.copyWith(locale: locale);
     await saveSettings(updatedSettings);
     emit(SettingsLoaded(updatedSettings));
   }
 
-  Future<void> updateThemeMode(ThemeMode themeMode) async {
+  Future<void> updateThemeMode(AppTheme themeMode) async {
     final currentSettings = (state as SettingsLoaded).settings;
     final updatedSettings = currentSettings.copyWith(themeMode: themeMode);
     await saveSettings(updatedSettings);

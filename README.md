@@ -4,15 +4,6 @@
 
 **Localization UI Tool** is a Flutter desktop application designed to simplify the management of localization files in ARB (Application Resource Bundle) format. It provides a convenient interface for adding, editing, and validating localization keys and their translations.
 
-## Architecture
-
-The project is divided into four main modules:
-
-*   **`core`**: Contains data models, repository interfaces, and business logic (use cases).
-*   **`infrastructure`**: Implements repositories, ARB file parsing, and file system interaction.
-*   **`application`**: Includes BLoC/Cubit for state management, dependency injection (DI), and coordination between `core` and `presentation`.
-*   **`presentation`**: Contains the Flutter UI, navigation, and the application's own localization.
-
 ## Features
 
 *   **ARB File Management**: Loading and saving localization data from ARB files.
@@ -66,12 +57,17 @@ To create executable files for various platforms:
     ```
     The executable will be located at `build/macos/Build/Products/Release/localization_ui_tool.app`.
 
-    add fullaccess to disk read/write in privacy&secure
+    #### macOS Permissions
+    For the application to be able to read and write files, you may need to grant it Full Disk Access in `System Settings > Privacy & Security > Full Disk Access`.
 
 *   **For Linux:**
-    not tested yet
+    ```bash
+    flutter build linux
+    ```
+    *Note: This build has not been fully tested.*
 
 ## Usage
+
 
 ### Setting up the ARB Directory
 
@@ -97,7 +93,11 @@ To create executable files for various platforms:
 When entering keys and values, the application performs validation against the ARB format. In case of errors, appropriate messages will be displayed.
 
 
-### todo 
+### Roadmap
 
-- add plurals
-- add modified files in session list on home page for quick observe
+- Add support for pluralization.
+- Display a list of modified files in the current session for quick access.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,5 +1,6 @@
 import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
+import 'package:localization_ui_tool/core/models/app_theme.dart';
 import 'package:localization_ui_tool/core/repositories/settings_repository.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -13,31 +14,34 @@ class LocalSettingsRepository implements SettingsRepository {
     debugPrint('LocalSettingsRepository: Reading directoryPath: $path');
     return Future.value(path);
   }
+
   @override
-  Future<void> setDirectoryPath(String path) {
+  Future<void> setDirectoryPath(String? path) {
     debugPrint('LocalSettingsRepository: Saving directoryPath: $path');
+    if (path == null) {
+      return prefs.remove('directoryPath');
+    }
     return prefs.setString('directoryPath', path);
   }
 
   @override
-  Future<Locale?> get locale async {
-    final languageCode = prefs.getString('locale');
-    if (languageCode == null) return null;
-    return Locale(languageCode);
+  Future<String?> get locale async {
+    return prefs.getString('locale');
   }
 
   @override
-  Future<void> setLocale(Locale locale) => prefs.setString('locale', locale.languageCode);
+  Future<void> setLocale(String locale) => prefs.setString('locale', locale);
 
   @override
-  Future<ThemeMode?> get themeMode async {
+  Future<AppTheme?> get themeMode async {
     final themeModeIndex = prefs.getInt('themeMode');
     if (themeModeIndex == null) return null;
-    return ThemeMode.values[themeModeIndex];
+    return AppTheme.values[themeModeIndex];
   }
 
   @override
-  Future<void> setThemeMode(ThemeMode themeMode) => prefs.setInt('themeMode', themeMode.index);
+  Future<void> setThemeMode(AppTheme themeMode) =>
+      prefs.setInt('themeMode', themeMode.index);
 
   @override
   Future<FlexScheme?> get flexScheme async {
@@ -50,5 +54,6 @@ class LocalSettingsRepository implements SettingsRepository {
   }
 
   @override
-  Future<void> setFlexScheme(FlexScheme flexScheme) => prefs.setString('flexScheme', flexScheme.name);
+  Future<void> setFlexScheme(FlexScheme flexScheme) =>
+      prefs.setString('flexScheme', flexScheme.name);
 }

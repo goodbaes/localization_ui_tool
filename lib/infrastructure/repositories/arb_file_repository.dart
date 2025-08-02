@@ -155,7 +155,8 @@ class ArbFileRepository implements LocalizationRepository {
     }
   }
 
-  static Future<bool> hasArbFiles(String directoryPath) async {
+  @override
+  Future<bool> hasArbFiles(String directoryPath) async {
     if (!await DirectoryAccessValidator.isAccessible(directoryPath)) {
       debugPrint('Directory is not accessible: $directoryPath');
       return false;

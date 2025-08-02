@@ -6,6 +6,7 @@ import 'package:localization_ui_tool/application/bloc/localization_cubit.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
 import 'package:localization_ui_tool/application/di.dart';
 import 'package:localization_ui_tool/application/navigation/router.dart';
+import 'package:localization_ui_tool/core/models/app_theme.dart';
 import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 
 void main() async {
@@ -88,9 +89,15 @@ class _MyAppState extends State<MyApp> {
         },
         builder: (context, state) {
           Locale? currentLocale;
-          if (state is SettingsLoaded) {
-            currentLocale = state.settings.locale;
+          if (state is SettingsLoaded && state.settings.locale != null) {
+            currentLocale = Locale(state.settings.locale!);
           }
+
+          ThemeMode themeMode = ThemeMode.system;
+          if (state is SettingsLoaded && state.settings.themeMode != null) {
+            themeMode = ThemeMode.values[state.settings.themeMode!.index];
+          }
+
           return MaterialApp.router(
             routerConfig: router,
             locale: currentLocale, // Use the locale from settings
@@ -107,7 +114,7 @@ class _MyAppState extends State<MyApp> {
             darkTheme: FlexThemeData.dark(
               scheme: (state is SettingsLoaded ? state.settings.flexScheme : FlexScheme.material),
             ),
-            themeMode: (state is SettingsLoaded ? state.settings.themeMode : ThemeMode.system),
+            themeMode: themeMode,
           );
         },
       ),

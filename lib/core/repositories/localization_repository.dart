@@ -5,4 +5,5 @@ abstract class LocalizationRepository {
   Future<List<LocalizationEntry>> loadAll();
   Future<void> saveEntry(LocalizationEntry entry);
   Future<List<Locale>> getSupportedLocales();
+  Future<bool> hasArbFiles(String directoryPath);
 }

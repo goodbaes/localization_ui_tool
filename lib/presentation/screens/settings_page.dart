@@ -2,6 +2,7 @@ import 'package:flex_color_scheme/flex_color_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:localization_ui_tool/application/bloc/settings_cubit.dart';
+import 'package:localization_ui_tool/core/models/app_theme.dart';
 import 'package:localization_ui_tool/l10n/arb/app_localizations.dart';
 import 'package:localization_ui_tool/l10n/l10n.dart';
 import 'package:localization_ui_tool/presentation/widgets/error_dialog.dart';
@@ -44,7 +45,6 @@ class _SettingsPageState extends State<SettingsPage> {
 
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
-
       appBar: AppBar(
         title: Text(context.l10n.settings),
       ),
@@ -80,18 +80,18 @@ class _SettingsPageState extends State<SettingsPage> {
                       title: Text(context.l10n.language),
                       trailing: _isLoadingLocales
                           ? const CircularProgressIndicator()
-                          : DropdownButton<Locale>(
-                              value: state.settings.locale ?? _supportedLocales.firstOrNull,
-                              onChanged: (Locale? newLocale) {
+                          : DropdownButton<String>(
+                              value: state.settings.locale,
+                              onChanged: (String? newLocale) {
                                 if (newLocale != null) {
                                   context.read<SettingsCubit>().updateLocale(newLocale);
                                 }
                               },
-                              items: _supportedLocales.map<DropdownMenuItem<Locale>>((
+                              items: _supportedLocales.map<DropdownMenuItem<String>>((
                                 Locale locale,
                               ) {
-                                return DropdownMenuItem<Locale>(
-                                  value: locale,
+                                return DropdownMenuItem<String>(
+                                  value: locale.languageCode,
                                   child: Text(locale.languageCode),
                                 );
                               }).toList(),
@@ -99,17 +99,17 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     ListTile(
                       title: const Text('Theme Mode'), // TODO: Localize this string
-                      trailing: DropdownButton<ThemeMode>(
-                        value: state.settings.themeMode ?? ThemeMode.system,
-                        onChanged: (ThemeMode? newThemeMode) {
+                      trailing: DropdownButton<AppTheme>(
+                        value: state.settings.themeMode ?? AppTheme.system,
+                        onChanged: (AppTheme? newThemeMode) {
                           if (newThemeMode != null) {
                             context.read<SettingsCubit>().updateThemeMode(newThemeMode);
                           }
                         },
-                        items: ThemeMode.values.map<DropdownMenuItem<ThemeMode>>((
-                          ThemeMode themeMode,
+                        items: AppTheme.values.map<DropdownMenuItem<AppTheme>>((
+                          AppTheme themeMode,
                         ) {
-                          return DropdownMenuItem<ThemeMode>(
+                          return DropdownMenuItem<AppTheme>(
                             value: themeMode,
                             child: Text(themeMode.toString().split('.').last), // Display enum name
                           );
