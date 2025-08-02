@@ -98,9 +98,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             ),
                     ),
                     ListTile(
-                      title: const Text('Theme Mode'), // TODO: Localize this string
+                      title: Text(context.l10n.settingsThemeMode),
                       trailing: DropdownButton<AppTheme>(
-                        value: state.settings.themeMode ?? AppTheme.system,
+                        value: state.settings.themeMode,
                         onChanged: (AppTheme? newThemeMode) {
                           if (newThemeMode != null) {
                             context.read<SettingsCubit>().updateThemeMode(newThemeMode);
@@ -117,9 +117,9 @@ class _SettingsPageState extends State<SettingsPage> {
                       ),
                     ),
                     ListTile(
-                      title: const Text('Theme Color Scheme'), // TODO: Localize this string
+                      title: Text(context.l10n.settingsThemeColorScheme),
                       trailing: DropdownButton<FlexScheme>(
-                        value: state.settings.flexScheme ?? FlexScheme.material,
+                        value: state.settings.flexScheme,
                         onChanged: (FlexScheme? newFlexScheme) {
                           if (newFlexScheme != null) {
                             context.read<SettingsCubit>().updateFlexScheme(newFlexScheme);

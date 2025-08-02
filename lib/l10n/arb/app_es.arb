@@ -43,8 +43,13 @@
   "macOSPermissionErrorStepEight": "8. Asegúrese de que el interruptor junto a su aplicación esté activado (azul).",
   "macOSPermissionErrorButton": "Mostrar Instrucciones",
   "qq": "a",
-  "test": "test",
+  "test": "testnn",
   "theme": "Tema",
   "www": "www",
-  "qwerty": "qwe"
+  "qwerty": "qwe",
+  "settingsThemeMode": "Modo de tema",
+  "settingsThemeColorScheme": "Esquema de color del tema",
+  "entryListOpenFolder": "Abrir carpeta",
+  "ttttt": "ttt",
+  "aaaa": "aaa"
 }

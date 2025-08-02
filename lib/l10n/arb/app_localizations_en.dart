@@ -153,4 +153,13 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get qwerty => 'qwe';
+
+  @override
+  String get settingsThemeMode => 'Theme Mode';
+
+  @override
+  String get settingsThemeColorScheme => 'Theme Color Scheme';
+
+  @override
+  String get entryListOpenFolder => 'Open folder';
 }

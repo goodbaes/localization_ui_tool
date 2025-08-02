@@ -154,4 +154,13 @@ class AppLocalizationsRu extends AppLocalizations {
 
   @override
   String get qwerty => 'qwe';
+
+  @override
+  String get settingsThemeMode => 'Режим темы';
+
+  @override
+  String get settingsThemeColorScheme => 'Цветовая схема темы';
+
+  @override
+  String get entryListOpenFolder => 'Открыть папку';
 }

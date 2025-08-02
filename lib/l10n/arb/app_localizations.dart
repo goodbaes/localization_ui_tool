@@ -369,6 +369,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'qwe'**
   String get qwerty;
+
+  /// No description provided for @settingsThemeMode.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Mode'**
+  String get settingsThemeMode;
+
+  /// No description provided for @settingsThemeColorScheme.
+  ///
+  /// In en, this message translates to:
+  /// **'Theme Color Scheme'**
+  String get settingsThemeColorScheme;
+
+  /// No description provided for @entryListOpenFolder.
+  ///
+  /// In en, this message translates to:
+  /// **'Open folder'**
+  String get entryListOpenFolder;
 }
 
 class _AppLocalizationsDelegate

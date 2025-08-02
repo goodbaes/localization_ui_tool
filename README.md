@@ -68,6 +68,7 @@ To create executable files for various platforms:
 
 ## Usage
 
+![Example Usage](example.gif)
 
 ### Setting up the ARB Directory
 

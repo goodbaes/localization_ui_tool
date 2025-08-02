@@ -4,14 +4,14 @@ import 'package:localization_ui_tool/core/models/app_theme.dart';
 class Settings {
   Settings({
     this.directoryPath,
-    this.locale,
-    this.themeMode,
-    this.flexScheme,
+    this.locale = 'en',
+    this.themeMode = AppTheme.system,
+    this.flexScheme = FlexScheme.material,
   });
   final String? directoryPath;
-  final String? locale;
-  final AppTheme? themeMode;
-  final FlexScheme? flexScheme;
+  final String locale;
+  final AppTheme themeMode;
+  final FlexScheme flexScheme;
 
   Settings copyWith({
     String? directoryPath,

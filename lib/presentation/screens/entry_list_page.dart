@@ -161,7 +161,7 @@ class _EntryListPageState extends State<EntryListPage> {
                       ElevatedButton(
                         onPressed: () => context.read<SettingsCubit>().selectDirectory(),
 
-                        child: const Text('Open folder'),
+                        child: Text(context.l10n.entryListOpenFolder),
                       ),
                       Text(context.l10n.errorLoadingEntries),
                     ],

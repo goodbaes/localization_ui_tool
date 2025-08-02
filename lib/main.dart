@@ -88,33 +88,33 @@ class _MyAppState extends State<MyApp> {
           }
         },
         builder: (context, state) {
-          Locale? currentLocale;
-          if (state is SettingsLoaded && state.settings.locale != null) {
-            currentLocale = Locale(state.settings.locale!);
+          if (state is SettingsLoaded) {
+            return MaterialApp.router(
+              routerConfig: router,
+              locale: Locale(state.settings.locale),
+              localizationsDelegates: const [
+                AppLocalizations.delegate,
+                GlobalMaterialLocalizations.delegate,
+                GlobalWidgetsLocalizations.delegate,
+                GlobalCupertinoLocalizations.delegate,
+              ],
+              supportedLocales: _supportedLocales,
+              theme: FlexThemeData.light(
+                scheme: state.settings.flexScheme,
+              ),
+              darkTheme: FlexThemeData.dark(
+                scheme: state.settings.flexScheme,
+              ),
+              themeMode: ThemeMode.values[state.settings.themeMode.index],
+            );
           }
-
-          ThemeMode themeMode = ThemeMode.system;
-          if (state is SettingsLoaded && state.settings.themeMode != null) {
-            themeMode = ThemeMode.values[state.settings.themeMode!.index];
-          }
-
-          return MaterialApp.router(
-            routerConfig: router,
-            locale: currentLocale, // Use the locale from settings
-            localizationsDelegates: const [
-              AppLocalizations.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: _supportedLocales, // Use dynamically loaded locales
-            theme: FlexThemeData.light(
-              scheme: (state is SettingsLoaded ? state.settings.flexScheme : FlexScheme.material),
+          // Show a loading indicator while settings are being loaded
+          return const MaterialApp(
+            home: Scaffold(
+              body: Center(
+                child: CircularProgressIndicator(),
+              ),
             ),
-            darkTheme: FlexThemeData.dark(
-              scheme: (state is SettingsLoaded ? state.settings.flexScheme : FlexScheme.material),
-            ),
-            themeMode: themeMode,
           );
         },
       ),
